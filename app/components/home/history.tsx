@@ -1,0 +1,45 @@
+import { _refreshHistory } from "@/hooks/novel";
+import { _user } from "@/hooks/user";
+import { get } from "@/utils/fetch";
+import { useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+
+export default function History() {
+  const user = useAtomValue(_user); // selalu dipanggil
+  const [history, setHistory] = useState<any>({});
+  const refreshHistory = useAtomValue(_refreshHistory); // selalu dipanggil
+
+  useEffect(() => {
+    if (user) {
+      get({
+        url: "history/first?user=" + user.user?.id,
+        header: { Authorization: "Bearer " + user?.token },
+        setter: setHistory,
+      });
+    }
+  }, [user, refreshHistory]);
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <View className="py-4 px-4">
+      <TouchableOpacity className="border-[0.5px] rounded-lg border-black/10 p-4">
+        <Text
+          className="font-serif text-lg text-black leading-6"
+          numberOfLines={2}
+        >
+          {history?.data?.chapter?.title}
+        </Text>
+        <Text className="font-roboto text-black/70 py-1">
+          {history?.data?.chapter?.novel?.title}
+        </Text>
+        <Text className="text-base text-black/50 font-roboto">
+          Dibaca {history?.data?.updated_at}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}

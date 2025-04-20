@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  letter-spacing: 0.25px;
+}
+
+@layer components {
+  .navbar-container {
+    @apply w-full h-16 border-b-[0.5px] border-black/10 p-4 flex-row justify-between items-center;
+  }
+}
