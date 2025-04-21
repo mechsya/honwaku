@@ -12,9 +12,10 @@ import {
 } from "react-native-reanimated";
 import * as Keychain from "react-native-keychain";
 import { post } from "@/utils/fetch";
-import { useAtom, useSetAtom } from "jotai";
-import { _user } from "@/hooks/user";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { _refreshAfterLogout, _user } from "@/hooks/user";
 import CustomModal from "@/components/modal";
+import { _reload } from "@/hooks/view";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +26,7 @@ configureReanimatedLogger({
 
 export default function RootLayout() {
   const [user, setUser] = useAtom(_user);
+  const refreshAfterLogout = useAtomValue(_refreshAfterLogout);
 
   const [loaded] = useFonts({
     Roboto: require("../assets/fonts/Roboto-Regular.ttf"),
@@ -49,8 +51,8 @@ export default function RootLayout() {
         setter: setUser,
       });
 
-      if (user?.user) {
-        await Keychain.setGenericPassword(user?.user.email, password);
+      if (user) {
+        await Keychain.setGenericPassword(user?.data.email, password);
       }
     };
 
@@ -58,7 +60,7 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, refreshAfterLogout]);
 
   if (!loaded) {
     return null;

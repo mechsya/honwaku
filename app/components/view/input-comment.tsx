@@ -42,7 +42,7 @@ export default function InputComment() {
         Authorization: "Bearer " + user?.token,
       },
       body: {
-        user: user?.user.id,
+        user: user?.data.id,
         novel: novel?.id,
         content: commentInput,
       },
@@ -54,13 +54,13 @@ export default function InputComment() {
 
   return (
     <>
-      <View className="bg-white flex-row border-black/10 absolute bottom-0 items-center w-full px-4 py-3">
+      <View className="bg-white flex-row border-black/10 items-center w-full px-4 py-3">
         <TextInput
           value={commentInput}
           onChangeText={(value) => setCommentInput(value)}
           placeholder="Tulis Komentar"
           multiline
-          className="bg-gray-100 px-4 h-14 flex-1 rounded"
+          className="bg-gray-50 px-4 h-14 flex-1 rounded border-[0.5px] border-black/10"
         />
         <TouchableOpacity
           onPress={handleComment}

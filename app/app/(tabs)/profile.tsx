@@ -1,11 +1,34 @@
+import * as Keychain from "react-native-keychain";
 import Container from "@/components/container";
-import { _user } from "@/hooks/user";
+import { _refreshAfterLogout, _user } from "@/hooks/user";
 import { router } from "expo-router";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import { cn } from "@/components/cn";
+import * as WebBrowser from "expo-web-browser";
 
 export default function Page() {
-  const user = useAtomValue(_user);
+  const [user, setUser] = useAtom(_user);
+  const setRefresh = useSetAtom(_refreshAfterLogout);
+
+  const options = [
+    {
+      screen: "Global Chat",
+      callback: () => router.navigate("/chat-global"),
+    },
+    {
+      screen: "Follow us",
+      callback: async () =>
+        await WebBrowser.openBrowserAsync("https://linktr.ee/alinmeysa"),
+    },
+    {
+      screen: "Logout",
+      callback: async () => {
+        setUser(undefined);
+        await Keychain.resetGenericPassword();
+      },
+    },
+  ];
 
   return (
     <Container>
@@ -22,21 +45,11 @@ export default function Page() {
             />
             <View className="w-full">
               <Text className="font-robotoSemibold text-black">
-                {user?.user.name}
+                {user?.data?.name}
               </Text>
               <Text className="font-roboto text-black/50">
-                {user?.user.email}
+                {user?.data?.email}
               </Text>
-              <View className="flex-row items-center gap-2">
-                <TouchableOpacity
-                  style={{ alignSelf: "flex-start" }}
-                  className="bg-red-500 px-2 mt-2 py-1 rounded"
-                >
-                  <Text className="text-white text-sm font-robotoMedium">
-                    Free
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         ) : (
@@ -50,17 +63,21 @@ export default function Page() {
         )}
 
         <FlatList
-          data={[
-            { screen: "Global Chat", path: "/chat-global" },
-            { screen: "Upgrade to Premium", path: "/premium" },
-            { screen: "Follow us", path: "follow" },
-          ]}
-          renderItem={({ item }) => (
+          data={
+            !user ? options.filter((item) => item.screen !== "Logout") : options
+          }
+          renderItem={({ item, index }) => (
             <TouchableOpacity
-              onPress={() => router.navigate("/chat-global")}
+              key={index}
+              onPress={item.callback}
               className="py-3 px-4 border-b-[0.5px] border-black/10"
             >
-              <Text className="font-roboto text-black text-md">
+              <Text
+                className={cn(
+                  "font-roboto text-black text-md",
+                  item.screen === "Logout" ? "text-red-400" : "text-black"
+                )}
+              >
                 {item.screen}
               </Text>
             </TouchableOpacity>

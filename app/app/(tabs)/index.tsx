@@ -58,7 +58,10 @@ function Footer() {
   return (
     <>
       <View className="w-full px-6 py-6">
-        <TouchableOpacity className="w-full p-4 border-[0.5px] flex-row justify-between items-center border-black/10 rounded-full">
+        <TouchableOpacity
+          onPress={() => router.navigate("/explore")}
+          className="w-full p-4 border-[0.5px] flex-row justify-between items-center border-black/10 rounded-full"
+        >
           <Text className="font-roboto tracking-wide text-black">
             Cari Novel
           </Text>

@@ -19,7 +19,7 @@ export default function ChatGlobalScreen() {
     <Container>
       <Navbar />
       <FlatList
-        data={globalChat.data}
+        data={globalChat}
         renderItem={(item) => <CommentItem {...item.item} />}
       />
       <InputComment />

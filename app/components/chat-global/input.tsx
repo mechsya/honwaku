@@ -42,7 +42,7 @@ export default function InputComment() {
         Authorization: "Bearer " + user?.token,
       },
       body: {
-        user: user?.user.id,
+        user: user?.data.id,
         novel: novel?.id,
         content: input,
       },

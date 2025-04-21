@@ -8,8 +8,10 @@ import * as Keychain from "react-native-keychain";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { COLOR } from "@/constants/color";
 import { useRouter } from "expo-router";
-import { useAtom, useSetAtom } from "jotai";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
+
+const _loading = atom(false);
 
 const AuthScreen = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -17,15 +19,18 @@ const AuthScreen = () => {
   const [user, setUser] = useAtom(_user);
   const setModal = useSetAtom(_modal);
   const router = useRouter();
+  const setLoading = useSetAtom(_loading);
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleAuth = async () => {
+    setLoading(true);
     const { username, email, password } = form;
 
     if (!email || !password || (mode === "signup" && !username)) {
+      setLoading(false);
       return showModal("Input tidak boleh kosong", "sad");
     }
 
@@ -40,9 +45,8 @@ const AuthScreen = () => {
 
     if (result.code === 200) {
       if (mode === "signin") {
-        setUser(result);
-        // Uncomment saat build production
-        await Keychain.setGenericPassword(user?.user.email, password);
+        setUser(result.data);
+        await Keychain.setGenericPassword(result.data.data.email, password);
         showModal(result.message, "happy", () => router.replace("/"));
       } else {
         showModal(result.message, "happy", () => setMode("signin"));
@@ -51,6 +55,7 @@ const AuthScreen = () => {
     } else {
       showModal(result.message, "sad");
     }
+    setLoading(false);
   };
 
   const showModal = (
@@ -72,17 +77,9 @@ const AuthScreen = () => {
 
   return (
     <Container>
-      <Navbar />
-      <View className="flex-1 justify-center items-center p-4">
-        <View className="w-[90%]">
-          <Image
-            source={require("@/assets/images/logo.png")}
-            style={{ width: 100, height: 100, alignSelf: "center" }}
-          />
-          <Text className="text-2xl font-robotoMedium text-black text-center my-4">
-            {mode === "signin" ? "Login" : "Register"}
-          </Text>
-
+      <Navbar label={mode === "signin" ? "Masuk" : "Daftar"} />
+      <View className="flex-1  p-4">
+        <View className="w-full h-full">
           {mode === "signup" && (
             <InputField
               placeholder="Username"
@@ -103,13 +100,8 @@ const AuthScreen = () => {
             secureTextEntry
           />
 
-          <Button
-            text={mode === "signin" ? "Login" : "Register"}
-            onPress={handleAuth}
-          />
-
-          <View className="flex-row justify-center mt-4">
-            <Text className="font-robotoMedium text-black">
+          <View className="flex-row mt-6">
+            <Text className="font-robotoMedium text-black/70">
               {mode === "signin" ? "Belum punya akun? " : "Sudah punya akun? "}
             </Text>
             <TouchableOpacity
@@ -120,24 +112,24 @@ const AuthScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
-
-          {/* TODO :
-              Bakal ditambahkan kalo aplikasi sudah listed
-          */}
-          {/* <GoogleButton /> */}
+          <Button
+            text={mode === "signin" ? "Login" : "Register"}
+            onPress={() => handleAuth()}
+          />
         </View>
       </View>
     </Container>
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ label }: { label: string }) => {
   const router = useRouter();
   return (
-    <View className="absolute top-10 left-4">
+    <View className="navbar-container justify-start gap-4">
       <TouchableOpacity onPress={() => router.back()}>
-        <Icon name="arrow-back" size={24} color={COLOR.BLACK} />
+        <Icon name="arrow-back" size={20} color={COLOR.BLACK} />
       </TouchableOpacity>
+      <Text>{label}</Text>
     </View>
   );
 };
@@ -155,17 +147,31 @@ const InputField = ({
     onChangeText={onChange}
     keyboardType={keyboardType}
     secureTextEntry={secureTextEntry}
-    className="bg-gray-100 mb-2 rounded px-4 py-4 border-[0.5px] border-black/10"
+    className="w-full border-b-[0.5px] px-4 py-4 border-black/10"
   />
 );
 
-const Button = ({ text, onPress }: any) => (
-  <TouchableOpacity onPress={onPress}>
-    <Text className="bg-primary text-white p-4 rounded text-center font-robotoMedium">
-      {text}
-    </Text>
-  </TouchableOpacity>
-);
+import AntDesign from "@expo/vector-icons/AntDesign";
+
+const Button = ({ text, onPress }: any) => {
+  const loading = useAtomValue(_loading);
+
+  return (
+    <TouchableOpacity onPress={onPress} className="absolute bottom-5 w-full">
+      {loading ? (
+        <View className=" bg-primary text-white p-4  rounded ">
+          <View className="m-auto animate-spin">
+            <AntDesign name="loading1" size={16} color="white" />
+          </View>
+        </View>
+      ) : (
+        <Text className="bg-primary text-white p-4 rounded text-center font-robotoMedium">
+          {text}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+};
 
 const GoogleButton = () => (
   <TouchableOpacity className="flex-row items-center justify-center gap-2 mt-6 p-3 border border-black/10 rounded">

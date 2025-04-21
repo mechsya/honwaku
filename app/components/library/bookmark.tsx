@@ -10,10 +10,7 @@ import Wrapper from "../wrapper";
 import LoginAlert from "../login-alert";
 
 export default function Bookmark() {
-  const [bookmarks, setBookmark] = useState<{ code: number; data: any[] }>({
-    code: 0,
-    data: [],
-  });
+  const [bookmarks, setBookmark] = useState<any>([]);
   const user = useAtomValue(_user);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,20 +18,22 @@ export default function Bookmark() {
   if (!user) return <LoginAlert />;
 
   useEffect(() => {
-    get({
-      url: "bookmark?user=" + user?.user.id,
-      header: {
-        Authorization: "Bearer " + user?.token,
-      },
-      loading: setLoading,
-      setter: setBookmark,
-    });
+    if (user.data) {
+      get({
+        url: "bookmark?user=" + user?.data.id,
+        header: {
+          Authorization: "Bearer " + user?.token,
+        },
+        loading: setLoading,
+        setter: setBookmark,
+      });
+    }
   }, [refresh]);
 
   const handleBookmarkRemove = async (novelID: number) => {
     const result = await post({
       type: "DELETE",
-      url: "bookmark?user=" + user?.user.id + "&novel=" + novelID,
+      url: "bookmark?user=" + user?.data.id + "&novel=" + novelID,
       header: {
         Authorization: "Bearer " + user?.token,
       },
@@ -51,14 +50,16 @@ export default function Bookmark() {
   );
 
   return (
-    <Wrapper data={bookmarks.data} loading={loading}>
+    <Wrapper data={bookmarks} loading={loading}>
       <SwipeListView
         className="px-4"
         showsVerticalScrollIndicator={false}
-        data={bookmarks.data}
-        renderHiddenItem={(item) => renderHiddenItem(item.item.novel.id)}
+        data={bookmarks}
+        renderHiddenItem={({ item }: { item: any }) =>
+          renderHiddenItem(item.novel.id)
+        }
         rightOpenValue={-75}
-        renderItem={(item) => <CardNovel {...item.item.novel} />}
+        renderItem={({ item }: { item: any }) => <CardNovel {...item.novel} />}
       />
     </Wrapper>
   );

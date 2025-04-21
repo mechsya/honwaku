@@ -27,8 +27,6 @@ export default function NativeAds() {
     <NativeAdView
       style={{
         width: 250,
-        height: 250,
-        backgroundColor: "red",
         margin: "auto",
       }}
       nativeAd={nativeAd}

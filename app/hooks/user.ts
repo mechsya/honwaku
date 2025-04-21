@@ -1,7 +1,7 @@
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 
-interface IUser {
-  user: {
+type User = {
+  data: {
     id: string;
     name: string | any;
     email: string | any;
@@ -9,6 +9,7 @@ interface IUser {
   };
   token: string;
   expires_in: number;
-}
+};
 
-export const _user = atom<IUser | undefined>(undefined);
+export const _user = atom<User | undefined>(undefined);
+export const _refreshAfterLogout = atom<boolean>(false);

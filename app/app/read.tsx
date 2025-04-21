@@ -56,7 +56,7 @@ export default function ReadScreen() {
         url: "history",
         header: { Authorization: `Bearer ${user?.token}` },
         body: {
-          user: user?.user.id,
+          user: user?.data.id,
           chapter: chapter?.id,
         },
       });
@@ -127,9 +127,6 @@ function Navbar() {
       <View className="flex-row items-center gap-6">
         <TouchableOpacity onPress={() => settingRef?.expand()}>
           <Icon name="settings" size={22} color={COLOR.BLACK} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Icon name="share" size={22} color={COLOR.BLACK} />
         </TouchableOpacity>
       </View>
     </View>

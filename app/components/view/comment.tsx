@@ -8,6 +8,7 @@ import { useAtomValue } from "jotai";
 import { _novel } from "@/hooks/novel";
 import { _reload } from "@/hooks/view";
 import Wrapper from "../wrapper";
+import InputComment from "./input-comment";
 
 export default function Comment() {
   const [comments, setComment] = useState<any>([]);
@@ -24,12 +25,15 @@ export default function Comment() {
   }, [reload]);
 
   return (
-    <Wrapper loading={loading} data={comments}>
-      {comments.map((item: any, index: number) => (
-        <CommentItem {...item} key={index} />
-      ))}
-      <View className="h-20"></View>
-    </Wrapper>
+    <>
+      <InputComment />
+      <Wrapper loading={loading} data={comments}>
+        {comments.map((item: any, index: number) => (
+          <CommentItem {...item} key={index} />
+        ))}
+        <View className="h-20"></View>
+      </Wrapper>
+    </>
   );
 }
 

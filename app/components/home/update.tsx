@@ -16,7 +16,7 @@ export default function Update() {
 
   return (
     <View className="p-4">
-      <Seperator label="Bab Terbaru telah rilis!!" button={true} />
+      <Seperator label="Bab Terbaru telah rilis!!" button={false} />
       <Wrapper loading={loading} data={chapters}>
         <View>
           {chapters.map((item, index) => (

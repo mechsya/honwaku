@@ -11,9 +11,9 @@ export default function History() {
   const refreshHistory = useAtomValue(_refreshHistory); // selalu dipanggil
 
   useEffect(() => {
-    if (user) {
+    if (user?.data) {
       get({
-        url: "history/first?user=" + user.user?.id,
+        url: "history/first?user=" + user.data?.id,
         header: { Authorization: "Bearer " + user?.token },
         setter: setHistory,
       });
@@ -25,21 +25,25 @@ export default function History() {
   }
 
   return (
-    <View className="py-4 px-4">
-      <TouchableOpacity className="border-[0.5px] rounded-lg border-black/10 p-4">
-        <Text
-          className="font-serif text-lg text-black leading-6"
-          numberOfLines={2}
-        >
-          {history?.data?.chapter?.title}
-        </Text>
-        <Text className="font-roboto text-black/70 py-1">
-          {history?.data?.chapter?.novel?.title}
-        </Text>
-        <Text className="text-base text-black/50 font-roboto">
-          Dibaca {history?.data?.updated_at}
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      {history === null ? null : (
+        <View className="py-4 px-4">
+          <TouchableOpacity className="border-[0.5px] rounded-lg border-black/10 p-4">
+            <Text
+              className="font-serif text-lg text-black leading-6"
+              numberOfLines={2}
+            >
+              {history?.chapter?.title}
+            </Text>
+            <Text className="font-roboto text-black/70 py-1">
+              {history?.chapter?.novel?.title}
+            </Text>
+            <Text className="text-base text-black/50 font-roboto">
+              Dibaca {history?.updated_at}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </>
   );
 }

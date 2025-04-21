@@ -42,7 +42,7 @@ export default function ViewScreen() {
   const fetchNovel = useCallback(() => {
     if (!slug) return;
     get({
-      url: `novel/${slug}?user=${user?.user.id}`,
+      url: `novel/${slug}?user=${user?.data.id}`,
       setter: setNovel,
       loading: setLoading,
     });
@@ -65,10 +65,10 @@ export default function ViewScreen() {
     if (!novel) return;
 
     const url = novel.marked
-      ? `bookmark?user=${user?.user.id}&novel=${novel.id}`
+      ? `bookmark?user=${user?.data.id}&novel=${novel.id}`
       : "bookmark";
 
-    const body = novel.marked ? null : { user: user?.user.id, novel: novel.id };
+    const body = novel.marked ? null : { user: user?.data.id, novel: novel.id };
 
     const result = await post({
       type: novel.marked ? "DELETE" : "POST",
@@ -137,8 +137,6 @@ export default function ViewScreen() {
 
           {renderComponent === "komentar" && <Comment />}
         </ScrollView>
-
-        {renderComponent === "komentar" && <InputComment />}
       </Container>
     </GestureHandlerRootView>
   );

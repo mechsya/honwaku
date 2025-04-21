@@ -30,7 +30,7 @@ export default function Jumbotron() {
       <FlatList
         ref={flatListRef}
         className="w-full"
-        data={jumbotronItem.data}
+        data={jumbotronItem}
         horizontal
         pagingEnabled
         snapToInterval={width}
@@ -44,7 +44,7 @@ export default function Jumbotron() {
       />
       <View className="px-4">
         <FlatList
-          data={jumbotronItem.data}
+          data={jumbotronItem}
           horizontal
           showsHorizontalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "dev:build:android": "eas build:dev --profile development --platform android",
+    "dev:build:android": "eas build --profile development --platform android",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -54,7 +54,8 @@
     "react-native-webview": "13.12.5",
     "tailwind-merge": "^3.1.0",
     "tailwindcss": "^3.4.17",
-    "expo-dev-client": "~5.0.20"
+    "expo-dev-client": "~5.0.20",
+    "expo-clipboard": "~7.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

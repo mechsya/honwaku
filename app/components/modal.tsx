@@ -8,6 +8,7 @@ import {
   Dimensions,
   Text,
   Image,
+  Pressable,
 } from "react-native";
 import Icon from "./icon";
 import { COLOR } from "@/constants/color";
@@ -16,7 +17,7 @@ import { useAtom } from "jotai";
 
 export default function CustomModal({ children }: any) {
   const opacity = useRef(new Animated.Value(0)).current;
-  const scale = useRef(new Animated.Value(0.8)).current;
+  const translateY = useRef(new Animated.Value(50)).current; // dari bawah 50px
   const [modal, setModal] = useAtom(_modal);
 
   useEffect(() => {
@@ -27,8 +28,8 @@ export default function CustomModal({ children }: any) {
           duration: 300,
           useNativeDriver: true,
         }),
-        Animated.spring(scale, {
-          toValue: 1,
+        Animated.spring(translateY, {
+          toValue: 0,
           friction: 5,
           useNativeDriver: true,
         }),
@@ -40,8 +41,8 @@ export default function CustomModal({ children }: any) {
           duration: 200,
           useNativeDriver: true,
         }),
-        Animated.timing(scale, {
-          toValue: 0.8,
+        Animated.timing(translateY, {
+          toValue: 50,
           duration: 200,
           useNativeDriver: true,
         }),
@@ -56,19 +57,39 @@ export default function CustomModal({ children }: any) {
       case "happy":
         return require("@/assets/images/logo.png");
       default:
-        break;
+        return require("@/assets/images/logo.png"); // default fallback
     }
   };
 
   return (
-    <Modal transparent visible={modal.visible} animationType="none">
-      <View style={styles.centeredView}>
+    <Modal
+      statusBarTranslucent={true}
+      transparent
+      visible={modal.visible}
+      animationType="none"
+    >
+      <Pressable
+        style={styles.centeredView}
+        onPress={() => setModal({ ...modal, visible: false })}
+      >
+        {/* backdrop */}
+        <Animated.View style={[styles.backdrop, { opacity: opacity }]} />
+
+        {/* modal content */}
         <Animated.View
-          className="relative"
-          style={[styles.modalContainer, { transform: [{ scale }] }]}
+          className="relative bg-white rounded-lg p-4"
+          style={[
+            styles.modalContainer,
+            {
+              transform: [{ translateY }],
+              opacity,
+            },
+          ]}
         >
+          {/* close button */}
           <View className="justify-end flex-row">
             <TouchableOpacity
+              className="bg-gray-100 rounded-full p-2"
               onPress={() => setModal({ ...modal, visible: false })}
             >
               <Icon name={"close"} size={20} color={COLOR.BLACK} />
@@ -80,13 +101,13 @@ export default function CustomModal({ children }: any) {
               source={setMode(modal.mode)}
               style={{ width: 100, height: 100 }}
             />
-            <Text className="text-black font-robotoMedium text-lg text-center">
+            <Text className="text-black font-robotoMedium text-lg text-center mt-2">
               {modal.message}
             </Text>
             {children}
           </View>
         </Animated.View>
-      </View>
+      </Pressable>
     </Modal>
   );
 }
@@ -102,13 +123,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 16,
     minWidth: "80%",
+    borderRadius: 10,
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,0.1)",
     shadowRadius: 4,
+    padding: 16,
   },
   modalContent: {
     alignItems: "center",

@@ -1,4 +1,6 @@
-const BASE_URL = "http://192.168.0.2:8000/api/";
+export const BASE_URL = "http://192.168.0.2:8000";
+
+const API_URL = BASE_URL + "/api/";
 
 interface IProps {
   url: string;
@@ -13,13 +15,13 @@ export async function get(props: IProps) {
   try {
     props.loading?.(true);
 
-    const response = await fetch(BASE_URL + props.url, {
+    const response = await fetch(API_URL + props.url, {
       method: "GET",
       headers: props.header,
     });
 
     const result = await response.json();
-    props.setter?.(result);
+    props.setter?.(result.data);
     return result;
   } catch (error) {
     console.error("Fetch error:", error);
@@ -33,7 +35,7 @@ export async function post(props: IProps) {
   try {
     props.loading?.(true);
 
-    const response = await fetch(BASE_URL + props.url, {
+    const response = await fetch(API_URL + props.url, {
       method: props.type || "POST",
       body: JSON.stringify(props.body),
       headers: {
@@ -44,7 +46,7 @@ export async function post(props: IProps) {
     });
 
     const result = await response.json();
-    props.setter?.(result);
+    props.setter?.(result.data);
     return result;
   } catch (error) {
     console.error("Fetch error:", error);

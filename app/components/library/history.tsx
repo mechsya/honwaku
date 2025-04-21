@@ -18,7 +18,7 @@ export default function History() {
   useEffect(() => {
     if (user) {
       get({
-        url: "history?user=" + user?.user.id,
+        url: "history?user=" + user?.data.id,
         header: { Authorization: `Bearer ${user?.token}` },
         setter: setChapter,
         loading: setLoading,
@@ -30,7 +30,7 @@ export default function History() {
     <Wrapper data={chapters} loading={loading}>
       <FlatList
         className="px-4"
-        data={chapters.data}
+        data={chapters}
         renderItem={({ item }) => <ItemHistory {...item} />}
       />
     </Wrapper>
