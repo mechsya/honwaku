@@ -19,7 +19,7 @@
                     <a href="">@include('icon.instagram', ['size' => 28])</a>
                     <a href="">@include('icon.discord', ['size' => 28])</a>
                     <span class="hidden md:block text-white/50">|</span>
-                    <a href="">
+                    <a href="" class="hidden lg:block">
                         <img src="{{ asset('images/download.webp') }}" class="h-10 md:h-16" alt="Download" />
                     </a>
                 </div>
