@@ -12,5 +12,7 @@ Route::prefix("announcement")->group(function () {
 });
 
 Route::get("storage:link", function () {
-    Artisan::call("storage:link");
+    $target = storage_path('/app/public/');
+    $symlink = $_SERVER['DOCUMENT_ROOT'] . '/storage';
+    symlink($target, $symlink);
 });
