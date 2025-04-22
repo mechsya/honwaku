@@ -68,16 +68,18 @@ export default function CustomModal({ children }: any) {
       visible={modal.visible}
       animationType="none"
     >
-      <Pressable
-        style={styles.centeredView}
-        onPress={() => setModal({ ...modal, visible: false })}
-      >
+      <View style={styles.centeredView}>
         {/* backdrop */}
-        <Animated.View style={[styles.backdrop, { opacity: opacity }]} />
+        <Pressable
+          style={[
+            StyleSheet.absoluteFill,
+            { backgroundColor: "rgba(0,0,0,0.5)", opacity: 0.8 },
+          ]}
+          onPress={() => setModal({ ...modal, visible: false })}
+        />
 
         {/* modal content */}
         <Animated.View
-          className="relative bg-white rounded-lg p-4"
           style={[
             styles.modalContainer,
             {
@@ -87,9 +89,13 @@ export default function CustomModal({ children }: any) {
           ]}
         >
           {/* close button */}
-          <View className="justify-end flex-row">
+          <View style={{ alignItems: "flex-end" }}>
             <TouchableOpacity
-              className="bg-gray-100 rounded-full p-2"
+              style={{
+                backgroundColor: "#f0f0f0",
+                borderRadius: 100,
+                padding: 8,
+              }}
               onPress={() => setModal({ ...modal, visible: false })}
             >
               <Icon name={"close"} size={20} color={COLOR.BLACK} />
@@ -101,13 +107,21 @@ export default function CustomModal({ children }: any) {
               source={setMode(modal.mode)}
               style={{ width: 100, height: 100 }}
             />
-            <Text className="text-black font-robotoMedium text-lg text-center mt-2">
-              {modal.message}
+            <Text
+              style={{
+                marginTop: 8,
+                textAlign: "center",
+                fontSize: 16,
+                color: COLOR.BLACK,
+                fontFamily: "Roboto",
+              }}
+            >
+              {modal.message || ""}
             </Text>
             {children}
           </View>
         </Animated.View>
-      </Pressable>
+      </View>
     </Modal>
   );
 }
@@ -125,6 +139,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     minWidth: "80%",
     borderRadius: 10,
+    backgroundColor: "white",
     borderWidth: 0.5,
     borderColor: "rgba(0,0,0,0.1)",
     shadowRadius: 4,

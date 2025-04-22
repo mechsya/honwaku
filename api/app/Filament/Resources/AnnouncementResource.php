@@ -27,7 +27,7 @@ class AnnouncementResource extends Resource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?string $navigationGroup = 'News';
 
@@ -38,7 +38,7 @@ class AnnouncementResource extends Resource
                 Section::make()->schema([
                     TextInput::make("title"),
                     Hidden::make("slug")->default(Str::uuid()->toString()),
-                    Select::make("status")->options(["penting", "umum", "event"]),
+                    Select::make("status")->options(["penting" => "penting", "umum" => "umum"]),
                     Select::make('user_id')
                         ->label('Uploader')
                         ->options(User::where("isAdmin", 1)->get()->pluck('name', 'id'))

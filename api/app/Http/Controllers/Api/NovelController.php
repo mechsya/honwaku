@@ -14,7 +14,12 @@ class NovelController extends Controller
     public function showRecomendation()
     {
         $novels = Novel::with("chapter")->orderBy('view', 'desc')->limit(10)->get();
-        return response()->json($novels, 200);
+
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $novels
+        ],  200);
     }
     public function search()
     {
@@ -30,7 +35,11 @@ class NovelController extends Controller
             })
             ->get();
 
-        return response()->json($novels, 200);
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $novels
+        ],  200);
     }
 
     public function showBySlug($slug)
@@ -46,6 +55,10 @@ class NovelController extends Controller
 
         $novel->marked = $marked ? true : false;
 
-        return response()->json($novel, 200);
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $novel
+        ],  200);
     }
 }

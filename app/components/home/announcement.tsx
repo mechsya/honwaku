@@ -19,7 +19,13 @@ export default function Announcement() {
 
   return (
     <View className="p-4">
-      <Seperator label="Pengumuman" button={true} />
+      <Seperator
+        label="Pengumuman"
+        button={true}
+        onPress={async () =>
+          await WebBrowser.openBrowserAsync(BASE_URL + "/announcement/")
+        }
+      />
       <Wrapper loading={loading} data={announcement}>
         {announcement.map((item: any, index: any) => (
           <ItemAnouncement {...item} key={index} />
@@ -33,7 +39,7 @@ function ItemAnouncement(props: any) {
   return (
     <TouchableOpacity
       onPress={() =>
-        WebBrowser.openBrowserAsync(BASE_URL + "/blog/" + props.slug)
+        WebBrowser.openBrowserAsync(BASE_URL + "/announcement/" + props.slug)
       }
       className="py-3 border-b-[0.5px] border-black/10"
     >

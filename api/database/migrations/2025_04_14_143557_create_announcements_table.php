@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("title");
             $table->text("content");
             $table->foreignId("user_id")->references("id")->on("users")->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum("status", ["penting", "umum", "event"]);
+            $table->enum("status", ["penting", "umum"]);
             $table->timestamps();
         });
     }

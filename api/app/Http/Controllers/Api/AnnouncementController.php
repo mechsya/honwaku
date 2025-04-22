@@ -10,6 +10,11 @@ class AnnouncementController extends Controller
     public function update()
     {
         $announcement = Announcement::orderBy("id", "desc")->limit(10)->get();
-        return response()->json($announcement);
+
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $announcement
+        ], 200);
     }
 }

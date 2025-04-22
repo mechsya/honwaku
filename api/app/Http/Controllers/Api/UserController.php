@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Identity;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,11 @@ class UserController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        $user = User::select(["id", "name", "email", "password"])->where("email", request("email"))->first();
+        $user = User::select(["id", "name", "email", "password"])
+            ->with("identity:id,user_id,profile_picture,coin,premium")
+            ->where("email", request("email"))
+            ->first();
+
         if (!$user) {
             return response()->json(["code" => 404, "message" => "User belum pernah mendaftar"], 404);
         }
@@ -46,6 +51,11 @@ class UserController extends Controller
             "password" => Hash::make(request("password")),
         ]);
 
+
+        Identity::create([
+            "user_id" => $user->id
+        ]);
+
         return response()->json(["code" => 200, "message" => "Berhasil mendaftar", "user" => $user], 200);
     }
 
@@ -64,10 +74,12 @@ class UserController extends Controller
     {
         return response()->json([
             "code" => 200,
-            "user" => $user,
             "message" => "Berhasil login",
-            'token' => $token,
-            'expires_in' => auth()->factory()->getTTL()
+            "data" => [
+                "data" => $user,
+                'token' => $token,
+                'expires_in' => auth()->factory()->getTTL()
+            ]
         ]);
     }
 }

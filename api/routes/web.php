@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix("announcement")->group(function () {
+    Route::get("", [AnnouncementController::class, "get"]);
+    Route::get("{slug}", [AnnouncementController::class, "show"]);
 });

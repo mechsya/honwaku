@@ -19,19 +19,27 @@ class HistoryController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        return response()->json(["code" => 200, "data" => $histories], 200);
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $histories
+        ],  200);
     }
 
     public function first()
     {
-        $histories = History::with([
+        $history = History::with([
             'chapter.novel',
         ])
             ->where('user_id', request()->get('user'))
             ->orderBy('updated_at', 'desc')
             ->first();
 
-        return response()->json(["code" => 200, "data" => $histories], 200);
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $history
+        ],  200);
     }
 
     public function store()
@@ -49,6 +57,11 @@ class HistoryController extends Controller
 
         History::create(["user_id" => $user, "chapter_id" => $chapter]);
 
-        return response()->json(["code" => 200, "message" => "Berhasil disimpan"], 200);
+
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => null
+        ],  200);
     }
 }

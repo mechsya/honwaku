@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Livewire\on;
+
 return new class extends Migration
 {
     /**
@@ -13,11 +15,18 @@ return new class extends Migration
     {
         Schema::create('identities', function (Blueprint $table) {
             $table->id();
-            $table->string("profilePicture")
-                ->default("default.jpg");
-            $table->boolean("isPremium")
+            $table->foreignId("user_id")
+                ->references("id")
+                ->on("users")
+                ->cascadeOnUpdate();
+            $table->string("profile_picture")
+                ->default("default.png");
+            $table->integer("coin")
+                ->default(0);
+            $table->boolean("premium")
                 ->default(false);
-            $table->timestamp("expiredPremium");
+            $table->timestamp("expired_premium")
+                ->nullable();
             $table->timestamps();
         });
     }

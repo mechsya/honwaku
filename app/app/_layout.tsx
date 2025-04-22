@@ -16,6 +16,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { _refreshAfterLogout, _user } from "@/hooks/user";
 import CustomModal from "@/components/modal";
 import { _reload } from "@/hooks/view";
+import { initDatabase } from "@/utils/databse";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -35,6 +36,8 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    initDatabase();
+
     const checkLogin = async () => {
       const credentials = await Keychain.getGenericPassword();
 

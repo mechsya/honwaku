@@ -5,6 +5,7 @@ interface IProps {
   label: string;
   TextclassName?: string;
   button?: boolean | false;
+  onPress?: () => void;
 }
 
 export default function Seperator(props: IProps) {
@@ -20,7 +21,7 @@ export default function Seperator(props: IProps) {
         {props.label}
       </Text>
       {props.button ? (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
           <Text className="font-roboto text-primary">Lihat Semua</Text>
         </TouchableOpacity>
       ) : null}

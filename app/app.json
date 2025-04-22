@@ -48,7 +48,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true

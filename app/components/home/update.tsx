@@ -39,8 +39,13 @@ function ItemUpdate(props: any) {
         })
       }
     >
-      <Text className="font-serif text-lg text-black">{props.title}</Text>
-      <Text className="font-robotoSemibold leading-6 pb-1 text-black/70">
+      <Text numberOfLines={2} className="font-serif text-lg text-black">
+        {props.title}
+      </Text>
+      <Text
+        numberOfLines={2}
+        className="font-robotoSemibold leading-6 pb-1 text-black/70"
+      >
         {props.novel.title}
       </Text>
       <Text className="font-roboto text-black/50 text-sm">

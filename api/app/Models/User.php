@@ -73,6 +73,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Comment::class);
     }
 
+    public function identity()
+    {
+        return $this->hasOne(Identity::class);
+    }
+
     public function global()
     {
         return $this->hasMany(GlobalChat::class);

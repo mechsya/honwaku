@@ -15,10 +15,8 @@ export default function Bookmark() {
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  if (!user) return <LoginAlert />;
-
   useEffect(() => {
-    if (user.data) {
+    if (user?.data) {
       get({
         url: "bookmark?user=" + user?.data.id,
         header: {
@@ -48,6 +46,8 @@ export default function Bookmark() {
       </TouchableOpacity>
     </View>
   );
+
+  if (!user) return <LoginAlert />;
 
   return (
     <Wrapper data={bookmarks} loading={loading}>
