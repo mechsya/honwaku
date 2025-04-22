@@ -30,7 +30,7 @@
         </div>
     </section>
 
-    <section class="lg:w-[80%] w-dvw m-auto grid lg:grid-cols-2 gap-4 overflow-hidden">
+    <section class="lg:w-[80%] w-dvw m-auto grid lg:grid-cols-2 lg:gap-4 gap-0 overflow-hidden">
         @foreach ($announcements as $announcement)
             <a href="/announcement/{{ $announcement->slug }}" class="p-4 lg:w-full d-dvw border-b border-black/10">
                 <p class="text-black line-clamp-2 font-serif">{{ $announcement->title }}</p>

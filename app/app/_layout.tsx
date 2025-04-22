@@ -36,7 +36,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    initDatabase();
+    // initDatabase();
 
     const checkLogin = async () => {
       const credentials = await Keychain.getGenericPassword();
