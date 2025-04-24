@@ -18,10 +18,11 @@ import { useEffect, useState, useCallback } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Image, ScrollView, Text, View } from "react-native";
 import { _modal } from "@/hooks/modal";
+import Footer from "@/components/footer";
 
 function colorStatus(status?: string) {
   switch (status) {
-    case "end":
+    case "complete":
       return "bg-red-400";
     case "ongoing":
       return "bg-green-500";
@@ -101,7 +102,7 @@ export default function ViewScreen() {
         <Navbar />
         <ScrollView className="flex-1">
           <View className={cn("w-full h-2", colorStatus(novel.status))} />
-          <View className="p-4 flex-row border-b-[0.5px] gap-2 border-black/10">
+          <View className="p-4 flex-row border-b-[0.5px] gap-2  border-black/10">
             <View className="flex-1">
               <Text className="font-serif text-lg text-black leading-6">
                 {novel.title}
@@ -130,12 +131,11 @@ export default function ViewScreen() {
 
           <Description description={novel.sinopsis} />
           <TabBar />
-
           {renderComponent === "chapter" && (
             <Chapter chapters={novel.chapter} loading={loading} />
           )}
-
           {renderComponent === "komentar" && <Comment />}
+          <Footer />
         </ScrollView>
       </Container>
     </GestureHandlerRootView>

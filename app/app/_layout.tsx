@@ -17,6 +17,7 @@ import { _refreshAfterLogout, _user } from "@/hooks/user";
 import CustomModal from "@/components/modal";
 import { _reload } from "@/hooks/view";
 import { initDatabase } from "@/utils/databse";
+import { View } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,7 +37,11 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    // initDatabase();
+    async function database() {
+      await initDatabase();
+    }
+
+    database();
 
     const checkLogin = async () => {
       const credentials = await Keychain.getGenericPassword();
@@ -70,8 +75,7 @@ export default function RootLayout() {
   }
 
   return (
-    <>
-      <CustomModal />
+    <View style={{ flex: 1 }}>
       <Stack
         screenOptions={{
           animation: "fade",
@@ -82,6 +86,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-    </>
+      <CustomModal />
+    </View>
   );
 }

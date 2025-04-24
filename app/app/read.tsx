@@ -28,6 +28,7 @@ import { marked } from "marked";
 import { _user } from "@/hooks/user";
 import Banner from "@/components/ads/banner";
 import NativeAds from "@/components/ads/native";
+import Footer from "@/components/footer";
 
 const { width } = Dimensions.get("window");
 const snapPoints = ["25%", "50%", "75%"];
@@ -105,6 +106,7 @@ export default function ReadScreen() {
             <View className="mb-10">
               <NativeAds />
             </View>
+            <Footer />
           </ScrollView>
         )}
         <SettingPaperSheet />

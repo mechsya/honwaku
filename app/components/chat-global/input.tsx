@@ -1,5 +1,10 @@
 import { COLOR } from "@/constants/color";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Icon from "../icon";
 import { post } from "@/utils/fetch";
 import { useState } from "react";
@@ -12,6 +17,7 @@ import { _modal } from "@/hooks/modal";
 export default function InputComment() {
   const [input, setInput] = useState<string>("");
   const [reload, setReload] = useAtom(_reload);
+  const [loading, setLoading] = useState(false);
 
   const setModal = useSetAtom(_modal);
   const user = useAtomValue(_user);
@@ -46,6 +52,7 @@ export default function InputComment() {
         novel: novel?.id,
         content: input,
       },
+      loading: setLoading,
     }).then(() => {
       setInput("");
       setReload(!reload);
@@ -66,7 +73,11 @@ export default function InputComment() {
           onPress={handleComment}
           className="bg-primary w-10 h-10 ml-4 justify-center items-center rounded-full"
         >
-          <Icon name={"arrow-upward"} size={20} color={COLOR.WHITE} />
+          {loading ? (
+            <ActivityIndicator color={"white"} size={"small"} />
+          ) : (
+            <Icon name={"arrow-upward"} size={20} color={COLOR.WHITE} />
+          )}
         </TouchableOpacity>
       </View>
     </>

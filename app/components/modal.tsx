@@ -1,54 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
-  Modal,
-  View,
-  TouchableOpacity,
   Animated,
-  StyleSheet,
-  Dimensions,
-  Text,
   Image,
-  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Modal,
 } from "react-native";
-import Icon from "./icon";
-import { COLOR } from "@/constants/color";
 import { _modal } from "@/hooks/modal";
 import { useAtom } from "jotai";
+// import Modal from "react-native-modal";
+import { View } from "react-native";
+import Icon from "./icon";
+import { COLOR } from "@/constants/color";
 
 export default function CustomModal({ children }: any) {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateY = useRef(new Animated.Value(50)).current; // dari bawah 50px
   const [modal, setModal] = useAtom(_modal);
-
-  useEffect(() => {
-    if (modal.visible) {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.spring(translateY, {
-          toValue: 0,
-          friction: 5,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 0,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateY, {
-          toValue: 50,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [modal.visible]);
 
   const setMode = (mode: string) => {
     switch (mode) {
@@ -57,95 +26,39 @@ export default function CustomModal({ children }: any) {
       case "happy":
         return require("@/assets/images/logo.png");
       default:
-        return require("@/assets/images/logo.png"); // default fallback
+        return require("@/assets/images/logo.png");
     }
   };
 
   return (
     <Modal
-      statusBarTranslucent={true}
-      transparent
+      animationType="fade"
+      transparent={true}
       visible={modal.visible}
-      animationType="none"
+      onRequestClose={() => {
+        setModal({ ...modal, visible: !modal.visible });
+      }}
     >
-      <View style={styles.centeredView}>
-        {/* backdrop */}
-        <Pressable
-          style={[
-            StyleSheet.absoluteFill,
-            { backgroundColor: "rgba(0,0,0,0.5)", opacity: 0.8 },
-          ]}
-          onPress={() => setModal({ ...modal, visible: false })}
-        />
-
-        {/* modal content */}
-        <Animated.View
-          style={[
-            styles.modalContainer,
-            {
-              transform: [{ translateY }],
-              opacity,
-            },
-          ]}
-        >
-          {/* close button */}
-          <View style={{ alignItems: "flex-end" }}>
+      <View className="flex-1 justify-center items-center">
+        <View className="bg-white border border-black/10 rounded-xl p-8 w-64">
+          <View className="absolute top-2 right-2">
             <TouchableOpacity
-              style={{
-                backgroundColor: "#f0f0f0",
-                borderRadius: 100,
-                padding: 8,
-              }}
+              className="bg-gray-100 p-1 rounded-full"
               onPress={() => setModal({ ...modal, visible: false })}
             >
               <Icon name={"close"} size={20} color={COLOR.BLACK} />
             </TouchableOpacity>
           </View>
 
-          <View style={styles.modalContent}>
-            <Image
-              source={setMode(modal.mode)}
-              style={{ width: 100, height: 100 }}
-            />
-            <Text
-              style={{
-                marginTop: 8,
-                textAlign: "center",
-                fontSize: 16,
-                color: COLOR.BLACK,
-                fontFamily: "Roboto",
-              }}
-            >
+          <View className="flex-col items-center">
+            <Image className="w-20 h-20" source={setMode(modal.mode)} />
+            <Text className="font-robotoMedium text-black mt-2">
               {modal.message || ""}
             </Text>
             {children}
           </View>
-        </Animated.View>
+        </View>
       </View>
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContainer: {
-    minWidth: "80%",
-    borderRadius: 10,
-    backgroundColor: "white",
-    borderWidth: 0.5,
-    borderColor: "rgba(0,0,0,0.1)",
-    shadowRadius: 4,
-    padding: 16,
-  },
-  modalContent: {
-    alignItems: "center",
-  },
-});

@@ -84,7 +84,7 @@ export default function Page() {
           )}
         />
         <Text className="text-center font-roboto text-black/50 p-4">
-          App Version V1.0.0
+          App Version v1.0.0
         </Text>
       </View>
     </Container>

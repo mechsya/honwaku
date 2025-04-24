@@ -13,8 +13,6 @@ export default function History() {
   const [chapters, setChapter] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 
-  if (!user) return <LoginAlert />;
-
   useEffect(() => {
     if (user) {
       get({
@@ -25,6 +23,8 @@ export default function History() {
       });
     }
   }, []);
+
+  if (!user) return <LoginAlert />;
 
   return (
     <Wrapper data={chapters} loading={loading}>

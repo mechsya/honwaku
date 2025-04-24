@@ -44,7 +44,7 @@ function ChapterItem({ chapter }: { chapter: ChapterType }) {
   return (
     <TouchableOpacity
       onPress={handlePress}
-      className="px-4 py-3 flex-row items-center border-b-[0.5px] border-black/10"
+      className="px-4 py-3 flex-row items-center border-b-[0.5px] border-black/10 "
     >
       <View className="flex-1">
         <Text className="font-roboto text-black" numberOfLines={1}>

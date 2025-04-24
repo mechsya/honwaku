@@ -13,6 +13,7 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useAtomValue } from "jotai";
 import { _user } from "@/hooks/user";
 import NativeAds from "@/components/ads/native";
+import Footer from "@/components/footer";
 
 export default function HomeScreen() {
   return (
@@ -26,6 +27,17 @@ export default function HomeScreen() {
         <Recomendation />
         <Announcement />
         <NativeAds />
+        <View className="w-full px-6 py-6">
+          <TouchableOpacity
+            onPress={() => router.navigate("/explore")}
+            className="w-full p-4 border-[0.5px] flex-row justify-between items-center border-black/10 rounded-full"
+          >
+            <Text className="font-roboto tracking-wide text-black">
+              Cari Novel
+            </Text>
+            <Icon name={"arrow-forward"} size={20} color={COLOR.BLACK} />
+          </TouchableOpacity>
+        </View>
         <Footer />
       </ScrollView>
     </Container>
@@ -50,40 +62,6 @@ function PopupLogin() {
           </View>
         </TouchableOpacity>
       ) : null}
-    </>
-  );
-}
-
-function Footer() {
-  return (
-    <>
-      <View className="w-full px-6 py-6">
-        <TouchableOpacity
-          onPress={() => router.navigate("/explore")}
-          className="w-full p-4 border-[0.5px] flex-row justify-between items-center border-black/10 rounded-full"
-        >
-          <Text className="font-roboto tracking-wide text-black">
-            Cari Novel
-          </Text>
-          <Icon name={"arrow-forward"} size={20} color={COLOR.BLACK} />
-        </TouchableOpacity>
-      </View>
-      <View className="w-full h-36 justify-center items-center">
-        <Text className="mb-3 font-robotoMedium text-black">
-          Ikuti kami di:
-        </Text>
-        <View className="flex-row gap-2">
-          <TouchableOpacity className="bg-black w-10 h-10 justify-center items-center">
-            <FontAwesome6 name="instagram" size={20} color={COLOR.WHITE} />
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-black w-10 h-10 justify-center items-center">
-            <FontAwesome6 name="discord" size={20} color={COLOR.WHITE} />
-          </TouchableOpacity>
-          <TouchableOpacity className="bg-black w-10 h-10 justify-center items-center">
-            <FontAwesome6 name="facebook-f" size={20} color={COLOR.WHITE} />
-          </TouchableOpacity>
-        </View>
-      </View>
     </>
   );
 }

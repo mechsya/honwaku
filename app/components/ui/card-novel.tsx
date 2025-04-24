@@ -25,7 +25,7 @@ export default function CardNovel({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "end":
+      case "complete":
         return "text-red-500";
       case "ongoing":
         return "text-green-500";
