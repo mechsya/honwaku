@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::view("", "home.index");
+Route::view("privacy", "privacy");
 
 Route::prefix("announcement")->group(function () {
     Route::get("", [AnnouncementController::class, "get"]);
