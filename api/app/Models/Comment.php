@@ -21,8 +21,18 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function likeHistory()
+    {
+        return $this->hasMany(LikeHistory::class);
+    }
+
     public function novel()
     {
         return $this->belongsTo(novel::class);
+    }
+
+    public function report()
+    {
+        return $this->hasMany(Report::class);
     }
 }

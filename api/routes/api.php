@@ -59,5 +59,8 @@ Route::prefix("event")->group(function () {
 
 Route::prefix("comment")->group(function () {
     Route::get("", [CommentController::class, "get"]);
+    Route::get("show", [CommentController::class, "show"]);
+
+    Route::middleware("auth:api")->post("like", [CommentController::class, "updateLike"]);
     Route::middleware("auth:api")->post("", [CommentController::class, "create"]);
 });

@@ -14,6 +14,7 @@
                     <a href="" class="hidden md:block text-white/70 text-base md:text-lg">Announcement</a>
                 </div>
 
+
                 <div class="flex items-center gap-3">
                     <a href="">@include('icon.facebook', ['size' => 24])</a>
                     <a href="">@include('icon.instagram', ['size' => 28])</a>

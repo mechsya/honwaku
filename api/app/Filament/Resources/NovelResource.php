@@ -51,7 +51,7 @@ class NovelResource extends Resource
                         ->required()
                         ->label("Status Novel")
                         ->options([
-                            "end" => "End",
+                            "complete" => "Complete",
                             "ongoing" => "Ongoing",
                             "new" => "New"
                         ]),

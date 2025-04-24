@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("slug")->unique();
             $table->string("title")->index("title_index");
             $table->string("author");
-            $table->enum("status", ["end", "ongoing", "new"]);
+            $table->enum("status", ["complete", "ongoing", "new"]);
             $table->string("cover");
             $table->float("ranting")->default(0);
             $table->string("genre");
