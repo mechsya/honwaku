@@ -74,7 +74,7 @@ export default function ReadScreen() {
   const content = marked(
     chapter?.content?.replace(
       /http:\/\/localhost:8000/,
-      "http://192.168.0.2:8000"
+      "http://192.168.0.4:8000"
     ) || ""
   );
 

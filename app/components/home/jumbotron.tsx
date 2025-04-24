@@ -39,7 +39,7 @@ export default function Jumbotron() {
         decelerationRate="fast"
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }: { item: any }) => (
-          <ItemJumbotron cover={item.banner_url} id={item.id} />
+          <ItemJumbotron cover={item.image_url} id={item.id} />
         )}
       />
       <View className="px-4">
@@ -59,7 +59,7 @@ export default function Jumbotron() {
               onPress={() => scrollToIndex(index)}
             >
               <Image
-                source={{ uri: item.banner_url, width: 80, height: 40 }}
+                source={{ uri: item.image_url, width: 80, height: 40 }}
                 height={40}
                 width={80}
               />

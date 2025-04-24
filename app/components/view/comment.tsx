@@ -21,7 +21,7 @@ export default function Comment() {
 
   useEffect(() => {
     get({
-      url: `comment?id=${novel?.id}`,
+      url: `comment?novel=${novel?.id}`,
       setter: setComment,
       loading: setLoading,
     });
@@ -62,7 +62,7 @@ const CommentItem = (props: any) => {
     const response = await post({
       url: "comment/like",
       header: {
-        Authorization: "Bearer " + user?.token,
+        Authorization: `Bearer ${user?.token}`,
       },
       body: {
         user: user?.data.id,
@@ -71,8 +71,8 @@ const CommentItem = (props: any) => {
     });
 
     if (response) {
-      const res = await get({
-        url: `comment/show?id=${props.id}&user=${user.data.id}`,
+      await get({
+        url: `comment/show?novel=${props.id}&user=${user.data.id}`,
         loading: setLikeLoading,
         setter: setComment,
       });
@@ -90,7 +90,7 @@ const CommentItem = (props: any) => {
     }
 
     await WebBrowser.openBrowserAsync(
-      BASE_URL + "/report?user=" + user?.data.id + "&comment=" + props.id
+      BASE_URL + `/report?user=${user?.data.id}&comment=${props.id}`
     );
   };
 

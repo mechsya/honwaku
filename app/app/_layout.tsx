@@ -37,12 +37,6 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    async function database() {
-      await initDatabase();
-    }
-
-    database();
-
     const checkLogin = async () => {
       const credentials = await Keychain.getGenericPassword();
 
@@ -53,11 +47,15 @@ export default function RootLayout() {
       const email = credentials.username;
       const password = credentials.password;
 
-      post({
+      const response = await post({
         url: "user/signin",
         body: { email, password },
         setter: setUser,
       });
+
+      if (response.code !== 200) {
+        await Keychain.resetGenericPassword();
+      }
 
       if (user) {
         await Keychain.setGenericPassword(user?.data.email, password);
@@ -65,6 +63,7 @@ export default function RootLayout() {
     };
 
     checkLogin();
+
     if (loaded) {
       SplashScreen.hideAsync();
     }
