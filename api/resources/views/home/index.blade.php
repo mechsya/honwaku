@@ -1,31 +1,32 @@
 @extends('container')
 
+<!-- Navbar -->
+<nav class="w-full bg-base border-white/10 border-b-[0.5px] flex items-center px-4 py-2">
+    <section class="w-full max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a href="/" class="flex items-center gap-2">
+                <img src="{{ asset('images/logo.png') }}" class="w-8 h-8 md:w-10 md:h-10" alt="Honwaku Logo" />
+                <p class="font-roboto font-medium text-white text-lg md:text-2xl tracking-wider">Honwaku</p>
+            </a>
+            <span class="hidden md:block text-white/50">|</span>
+            <a href="/announcement" class="hidden md:block text-white/70 text-base md:text-lg">Announcement</a>
+        </div>
+
+
+        <div class="flex items-center gap-3">
+            <a href="">@include('icon.facebook', ['size' => 24])</a>
+            <a href="">@include('icon.instagram', ['size' => 28])</a>
+            <a href="">@include('icon.discord', ['size' => 28])</a>
+            <span class="hidden md:block text-white/50">|</span>
+            <a href="" class="hidden lg:block">
+                <img src="{{ asset('images/download.webp') }}" class="h-10 md:h-16" alt="Download" />
+            </a>
+        </div>
+    </section>
+</nav>
+
 @section('content')
     <div class="bg-base w-full">
-        <!-- Navbar -->
-        <nav class="w-full bg-base border-white/10 border-b-[0.5px] flex items-center px-4 py-2">
-            <section class="w-full max-w-7xl mx-auto flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <a href="/" class="flex items-center gap-2">
-                        <img src="{{ asset('images/logo.png') }}" class="w-8 h-8 md:w-10 md:h-10" alt="Honwaku Logo" />
-                        <p class="font-roboto font-medium text-white text-lg md:text-2xl tracking-wider">Honwaku</p>
-                    </a>
-                    <span class="hidden md:block text-white/50">|</span>
-                    <a href="" class="hidden md:block text-white/70 text-base md:text-lg">Announcement</a>
-                </div>
-
-
-                <div class="flex items-center gap-3">
-                    <a href="">@include('icon.facebook', ['size' => 24])</a>
-                    <a href="">@include('icon.instagram', ['size' => 28])</a>
-                    <a href="">@include('icon.discord', ['size' => 28])</a>
-                    <span class="hidden md:block text-white/50">|</span>
-                    <a href="" class="hidden lg:block">
-                        <img src="{{ asset('images/download.webp') }}" class="h-10 md:h-16" alt="Download" />
-                    </a>
-                </div>
-            </section>
-        </nav>
 
         <!-- Hero Section -->
         <section class="flex flex-col-reverse lg:flex-row lg:w-[60%] w-full m-auto items-center p-6 md:p-10 my-7">

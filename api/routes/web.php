@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Artisan;
@@ -14,8 +15,18 @@ Route::prefix("announcement")->group(function () {
 });
 
 Route::prefix("report")->group(function () {
-    Route::get("", [ReportController::class, "index"]);
-    Route::post("", [ReportController::class, "store"])->name("report.post");
+    Route::view("/comment", "report.comment.index");
+    Route::post("/comment", [ReportController::class, "storeComment"])->name("report.comment.post");
+});
+
+Route::prefix("account")->group(function () {
+    // Route::get("", [ReportController::class, "index"]);
+
+    Route::view("delete", "account.delete");
+    Route::post("delete", [AccountController::class, "delete"])->name("account.delete");
+
+    Route::view("edit", "account.edit");
+    Route::put("edit", [AccountController::class, "edit"]);
 });
 
 Route::get("storage:link", function () {

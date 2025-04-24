@@ -38,7 +38,7 @@ class EventResource extends Resource
                 Section::make()->schema([
                     TextInput::make("title"),
                     Hidden::make("slug")->default(Str::uuid()->toString()),
-                    FileUpload::make("banner"),
+                    FileUpload::make("image"),
                     MarkdownEditor::make("content"),
                 ])
             ]);
@@ -50,7 +50,7 @@ class EventResource extends Resource
             ->columns([
                 TextColumn::make("id")->label("ID"),
                 TextColumn::make("title"),
-                ImageColumn::make("banner"),
+                ImageColumn::make("image"),
             ])
             ->filters([
                 //

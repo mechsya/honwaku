@@ -12,8 +12,8 @@ class Identity extends Model
 
     public function getPictureUrlAttribute()
     {
-        return $this->profile_picture
-            ? asset('storage/picture/' . $this->profile_picture)
+        return $this->picture
+            ? asset('storage/picture/' . $this->picture)
             : null;
     }
 

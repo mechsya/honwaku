@@ -2,42 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function storeComment()
     {
-        return view("report.index");
-    }
+        $reporter_id = request()->get("reporter");
+        $comment_id =  request()->get("comment");
 
-    public function store()
-    {
-        $user = request()->get("user");
-        $comment = request()->get("comment");
+        $comment = Comment::with("user")->find($comment_id);
 
-        logger([
-            'user' => $user,
-            'comment' => $comment,
+        if (!$comment) return back()->with("error", "comment yang anda laporkan tidak ada");
+
+        $reportAlreadyExist = Report::where("reporter_id", $reporter_id)->where("target_id", $comment->id)->first();
+
+        if ($reportAlreadyExist) return back()->with("error", "anda sudah pernah melaporkan kasus yang sama, jika tidak segera di tangani admin, tolong kontak admin secara pribadi di alinia.meysa@gmail.com");
+
+        $response = Report::create([
+            "reporter_id" => $reporter_id,
+            "reported_id" => $comment->user->id,
+            "target_id" => $comment->id,
+            "type" => "comment",
+            "reason" => request("reason"),
+            "status" => "pending"
         ]);
 
-        $report = Report::where("user_id", $user)->where("comment_id", $comment)->first();
-
-        logger([
-            'found_report' => $report
-        ]);
-
-        if ($report) {
-            return back()->with("error", "Kamu sudah pernah melaporkan kasus ini");
+        if (!$response) {
+            return back()->with("error", "sistem sedang mengalami error tunggu beberapa saat lagi");
         }
 
-        Report::create([
-            "user_id" => $user,
-            "comment_id" => $comment,
-            "type" => request("type")
-        ]);
-
-        return back()->with("success", "laporan kamu telah di terima, sedang menunggu persetujuan admin");
+        return back()->with("success", "terima kasih telah berhasil melapor, tunggu sebantar admin akan menangani secepatnya");
     }
 }

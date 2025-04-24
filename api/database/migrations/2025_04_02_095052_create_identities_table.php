@@ -19,7 +19,7 @@ return new class extends Migration
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate();
-            $table->string("profile_picture")
+            $table->string("picture")
                 ->default("default.png");
             $table->integer("coin")
                 ->default(0);

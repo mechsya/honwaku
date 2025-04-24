@@ -15,7 +15,7 @@ class UserController extends Controller
         $credentials = request(['email', 'password']);
 
         $user = User::select(["id", "name", "email", "password"])
-            ->with("identity:id,user_id,profile_picture,coin,premium")
+            ->with("identity:id,user_id,picture,coin,premium")
             ->where("email", request("email"))
             ->first();
 

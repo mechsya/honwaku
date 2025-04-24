@@ -13,17 +13,22 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")
+            $table->foreignId("reporter_id")
+                ->nullable()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId("comment_id")
+            $table->foreignId("reported_id")
+                ->nullable()
                 ->references("id")
-                ->on("comments")
+                ->on("users")
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->integer("target_id")->nullable();
+            $table->string("reason")->nullable();
             $table->string("type");
+            $table->enum("status", ["finished", "pending", "reject"])->default("pending");
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("slug");
             $table->string("title");
-            $table->text("content");
+            $table->text("content")->nullable();
             $table->foreignId("user_id")->references("id")->on("users")->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum("status", ["penting", "umum"]);
             $table->timestamps();

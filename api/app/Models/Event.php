@@ -8,12 +8,12 @@ class Event extends Model
 {
     protected $guarded = ["id"];
 
-    protected $appends = ['banner_url'];
+    protected $appends = ['image_url'];
 
-    public function getBannerUrlAttribute()
+    public function getImageUrlAttribute()
     {
-        return $this->banner
-            ? asset('storage/' . $this->banner)
+        return $this->image
+            ? asset('storage/' . $this->image)
             : null;
     }
 }

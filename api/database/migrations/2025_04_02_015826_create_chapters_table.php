@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("novel_id")->references("id")->on("novels")->cascadeOnUpdate();
+            $table->foreignId("novel_id")
+                ->references("id")
+                ->on("novels")
+                ->cascadeOnUpdate();
             $table->string("slug")->unique();
             $table->string("title");
             $table->string("volume", 10);

@@ -11,7 +11,7 @@ class CommentController extends Controller
 
     public  function get()
     {
-        $comments = Comment::with("user:id,name")->orderby("id", "desc")->where("novel_id", request()->get("id"))->get();
+        $comments = Comment::with("user:id,name")->orderby("id", "desc")->where("novel_id", request()->get("novel"))->get();
 
         foreach ($comments as $comment) {
             $liked = LikeHistory::where("user_id", $comment->user_id)->where("comment_id", $comment->id)->first();
@@ -43,7 +43,15 @@ class CommentController extends Controller
 
     public function show()
     {
-        $comment = Comment::with("user:id,name")->orderby("id", "desc")->where("id", request()->get("id"))->first();
+        $comment = Comment::with("user:id,name")->orderby("id", "desc")->where("id", request()->get("novel"))->first();
+
+        if (!$comment) {
+            return response()->json([
+                "code" => 404,
+                "message" => "data tidak berhasil di temukan",
+                "data" => null
+            ], 404);
+        }
 
         $liked = LikeHistory::where("user_id", request()->get("user"))->where("comment_id", $comment->id)->first();
         $comment->isLiked = $liked ? true : false;

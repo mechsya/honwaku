@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('novels', function (Blueprint $table) {
             $table->id();
             $table->string("slug")->unique();
-            $table->string("title")->index("title_index");
+            $table->string("title")
+                ->index("title_index");
             $table->string("author");
             $table->enum("status", ["complete", "ongoing", "new"]);
             $table->string("cover");
