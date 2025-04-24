@@ -33,7 +33,7 @@
                 <p class="text-4xl md:text-6xl font-roboto font-semibold text-[#C2A2FE] mb-2 md:mb-4">Honwaku</p>
                 <p class="text-4xl md:text-6xl font-roboto font-semibold text-white">Novel in your pocket</p>
                 <p class="text-base md:text-xl my-4 text-white/70">
-                    Honwaku adalah aplikasi baca novel ringan dan gratis untuk Android, dibuat dari dan untuk komunitas
+                    Honwaku adalah aplikasi baca novel ringan dan gratis untuk Android, dari dan untuk komunitas
                     pecinta novel.
                     Temukan dan baca novel favoritmu dengan lebih mudah dari sebelumnya, dalam tampilan yang sederhana dan
                     nyaman.

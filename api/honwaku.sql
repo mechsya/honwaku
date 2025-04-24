@@ -398,6 +398,36 @@ LOCK TABLES `jobs` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `like_histories`
+--
+
+DROP TABLE IF EXISTS `like_histories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `like_histories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `comment_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `like_histories_user_id_foreign` (`user_id`),
+  KEY `like_histories_comment_id_foreign` (`comment_id`),
+  CONSTRAINT `like_histories_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `like_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `like_histories`
+--
+
+LOCK TABLES `like_histories` WRITE;
+/*!40000 ALTER TABLE `like_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `like_histories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -409,7 +439,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,7 +461,9 @@ INSERT INTO `migrations` VALUES
 (10,'2025_04_18_032834_create_bookmarks_table',1),
 (11,'2025_04_18_032842_create_histories_table',1),
 (12,'2025_04_18_054127_create_events_table',1),
-(13,'2025_04_18_075141_create_global_chats_table',1);
+(13,'2025_04_18_075141_create_global_chats_table',1),
+(14,'2025_04_22_220734_create_like_histories_table',1),
+(15,'2025_04_23_045736_create_reports_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,7 +479,7 @@ CREATE TABLE `novels` (
   `slug` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `author` varchar(255) NOT NULL,
-  `status` enum('end','ongoing','new') NOT NULL,
+  `status` enum('complete','ongoing','new') NOT NULL,
   `cover` varchar(255) NOT NULL,
   `ranting` double NOT NULL DEFAULT 0,
   `genre` varchar(255) NOT NULL,
@@ -529,6 +561,37 @@ LOCK TABLES `personal_access_tokens` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reports`
+--
+
+DROP TABLE IF EXISTS `reports`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reports` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `comment_id` bigint(20) unsigned NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `reports_user_id_foreign` (`user_id`),
+  KEY `reports_comment_id_foreign` (`comment_id`),
+  CONSTRAINT `reports_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `reports_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reports`
+--
+
+LOCK TABLES `reports` WRITE;
+/*!40000 ALTER TABLE `reports` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reports` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sessions`
 --
 
@@ -588,7 +651,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'admin','mechsya@honwaku.my.id',0,1,NULL,'$2y$12$BqiC/m0iavFuHDos.KRaTOaFIYFhyviePGpwZ7GsIzd3Jz2qeuEUa',NULL,'2025-04-22 06:38:09','2025-04-22 06:38:09');
+(1,'admin','mechsya@honwaku.my.id',0,1,NULL,'$2y$12$.mmXJrKEZdC5DM4hc5hp8eeUqa/m8flNv8hTC.IAiDpDzeWMkkf8i',NULL,'2025-04-23 17:45:30','2025-04-23 17:45:30');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -601,4 +664,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-22 21:54:25
+-- Dump completed on 2025-04-24  7:45:37
