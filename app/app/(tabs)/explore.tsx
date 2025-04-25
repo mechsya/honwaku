@@ -4,6 +4,7 @@ import { COLOR } from "@/constants/color";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   FlatList,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
@@ -63,15 +64,14 @@ export default function ExploreScreen() {
         <View className="p-4">
           <Search onChange={handleChangeText} />
           <Seperator label="Hasil Pencarian" />
-          <Wrapper loading={loading} data={novels}>
-            <FlatList
-              data={novels}
-              nestedScrollEnabled={true}
-              renderItem={({ item, index }) => (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Wrapper loading={loading} data={novels}>
+              {novels.map((item) => (
                 <CardNovel key={item.id} {...item} />
-              )}
-            />
-          </Wrapper>
+              ))}
+              <View className="h-44"></View>
+            </Wrapper>
+          </ScrollView>
         </View>
         <Filter />
       </Container>

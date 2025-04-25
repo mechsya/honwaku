@@ -6,6 +6,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { cn } from "@/components/cn";
 import * as WebBrowser from "expo-web-browser";
+import { BASE_URL } from "@/utils/fetch";
 
 export default function Page() {
   const [user, setUser] = useAtom(_user);
@@ -20,6 +21,11 @@ export default function Page() {
       screen: "Follow us",
       callback: async () =>
         await WebBrowser.openBrowserAsync("https://linktr.ee/alinmeysa"),
+    },
+    {
+      screen: "Delete Account",
+      callback: async () =>
+        await WebBrowser.openBrowserAsync(BASE_URL + "/account/delete"),
     },
     {
       screen: "Logout",
@@ -64,7 +70,12 @@ export default function Page() {
 
         <FlatList
           data={
-            !user ? options.filter((item) => item.screen !== "Logout") : options
+            !user
+              ? options.filter(
+                  (item) =>
+                    item.screen !== "Logout" && item.screen !== "Delete Account"
+                )
+              : options
           }
           renderItem={({ item, index }) => (
             <TouchableOpacity

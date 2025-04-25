@@ -77,6 +77,7 @@ const AuthScreen = () => {
 
   return (
     <Container>
+      <Modal />
       <Navbar label={mode === "signin" ? "Masuk" : "Daftar"} />
       <View className="flex-1  p-4">
         <View className="w-full h-full">
@@ -152,6 +153,7 @@ const InputField = ({
 );
 
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Modal from "@/components/modal";
 
 const Button = ({ text, onPress }: any) => {
   const loading = useAtomValue(_loading);

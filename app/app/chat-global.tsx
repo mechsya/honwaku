@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { get } from "@/utils/fetch";
 import { useAtom, useAtomValue } from "jotai";
 import { _reload } from "@/hooks/view";
+import Modal from "@/components/modal";
 
 export default function ChatGlobalScreen() {
   const [globalChat, setGlobalChat] = useState<[] | any>([]);
@@ -17,6 +18,7 @@ export default function ChatGlobalScreen() {
 
   return (
     <Container>
+      <Modal />
       <Navbar />
       <FlatList
         data={globalChat}

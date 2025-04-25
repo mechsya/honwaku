@@ -1,6 +1,7 @@
 import { _refreshHistory } from "@/hooks/novel";
 import { _user } from "@/hooks/user";
 import { get } from "@/utils/fetch";
+import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -28,7 +29,18 @@ export default function History() {
     <>
       {history === null ? null : (
         <View className="py-4 px-4">
-          <TouchableOpacity className="border-[0.5px] rounded-lg border-black/10 p-4">
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "/read",
+                params: {
+                  slug: history.chapter.slug,
+                  novelSlug: history.chapter.novel?.slug,
+                },
+              })
+            }
+            className="border-[0.5px] rounded-lg border-black/10 p-4"
+          >
             <Text
               className="font-serif text-lg text-black leading-6"
               numberOfLines={2}

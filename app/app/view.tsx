@@ -5,7 +5,6 @@ import Chapter from "@/components/view/chapter";
 import Comment from "@/components/view/comment";
 import Description from "@/components/view/description";
 import InfoBar from "@/components/view/info-bar";
-import InputComment from "@/components/view/input-comment";
 import Navbar from "@/components/view/navbar";
 import TabBar from "@/components/view/tab-bar";
 import { _novel } from "@/hooks/novel";
@@ -19,6 +18,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Image, ScrollView, Text, View } from "react-native";
 import { _modal } from "@/hooks/modal";
 import Footer from "@/components/footer";
+import Modal from "@/components/modal";
 
 function colorStatus(status?: string) {
   switch (status) {
@@ -99,6 +99,7 @@ export default function ViewScreen() {
   return (
     <GestureHandlerRootView>
       <Container>
+        <Modal />
         <Navbar />
         <ScrollView className="flex-1">
           <View className={cn("w-full h-2", colorStatus(novel.status))} />

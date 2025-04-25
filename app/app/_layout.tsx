@@ -14,10 +14,8 @@ import * as Keychain from "react-native-keychain";
 import { post } from "@/utils/fetch";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { _refreshAfterLogout, _user } from "@/hooks/user";
-import CustomModal from "@/components/modal";
 import { _reload } from "@/hooks/view";
-import { initDatabase } from "@/utils/databse";
-import { View } from "react-native";
+import Modal from "@/components/modal";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -69,23 +67,18 @@ export default function RootLayout() {
     }
   }, [loaded, refreshAfterLogout]);
 
-  if (!loaded) {
-    return null;
-  }
+  if (!loaded) return null;
 
   return (
-    <View style={{ flex: 1 }}>
-      <Stack
-        screenOptions={{
-          animation: "fade",
-          headerShown: false,
-          navigationBarColor: COLOR.WHITE,
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <CustomModal />
-    </View>
+    <Stack
+      screenOptions={{
+        animation: "fade",
+        headerShown: false,
+        navigationBarColor: COLOR.WHITE,
+      }}
+    >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }

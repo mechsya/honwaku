@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+} from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import Icon from "../icon";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -12,6 +18,7 @@ import Wrapper from "../wrapper";
 import InputComment from "./input-comment";
 import { _user } from "@/hooks/user";
 import { _modal } from "@/hooks/modal";
+import Modal from "../modal";
 
 export default function Comment() {
   const [comments, setComment] = useState<any>([]);
@@ -28,14 +35,14 @@ export default function Comment() {
   }, [reload]);
 
   return (
-    <>
+    <KeyboardAvoidingView>
       <InputComment />
       <Wrapper loading={loading} data={comments}>
         {comments.map((item: any, index: number) => (
           <CommentItem {...item} key={index} />
         ))}
       </Wrapper>
-    </>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -90,7 +97,7 @@ const CommentItem = (props: any) => {
     }
 
     await WebBrowser.openBrowserAsync(
-      BASE_URL + `/report?user=${user?.data.id}&comment=${props.id}`
+      BASE_URL + `/report/comment?user=${user?.data.id}&comment=${props.id}`
     );
   };
 

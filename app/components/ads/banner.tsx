@@ -1,4 +1,3 @@
-import { Dimensions } from "react-native";
 import {
   BannerAd,
   BannerAdSize,
@@ -8,7 +7,7 @@ import {
 export default function Banner() {
   return (
     <BannerAd
-      unitId={TestIds.BANNER}
+      unitId={"ca-app-pub-9927932498877675/1221621280"}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
     />
   );

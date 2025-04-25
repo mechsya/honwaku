@@ -27,7 +27,7 @@ CREATE TABLE `announcements` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
+  `content` text DEFAULT NULL,
   `user_id` bigint(20) unsigned NOT NULL,
   `status` enum('penting','umum') NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -201,7 +201,7 @@ DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
-  `banner` varchar(255) NOT NULL,
+  `image` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `content` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -316,7 +316,7 @@ DROP TABLE IF EXISTS `identities`;
 CREATE TABLE `identities` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) unsigned NOT NULL,
-  `profile_picture` varchar(255) NOT NULL DEFAULT 'default.png',
+  `picture` varchar(255) NOT NULL DEFAULT 'default.png',
   `coin` int(11) NOT NULL DEFAULT 0,
   `premium` tinyint(1) NOT NULL DEFAULT 0,
   `expired_premium` timestamp NULL DEFAULT NULL,
@@ -569,16 +569,19 @@ DROP TABLE IF EXISTS `reports`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reports` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `comment_id` bigint(20) unsigned NOT NULL,
+  `reporter_id` bigint(20) unsigned DEFAULT NULL,
+  `reported_id` bigint(20) unsigned DEFAULT NULL,
+  `target_id` int(11) DEFAULT NULL,
+  `reason` varchar(255) DEFAULT NULL,
   `type` varchar(255) NOT NULL,
+  `status` enum('finished','pending','reject') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `reports_user_id_foreign` (`user_id`),
-  KEY `reports_comment_id_foreign` (`comment_id`),
-  CONSTRAINT `reports_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `reports_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `reports_reporter_id_foreign` (`reporter_id`),
+  KEY `reports_reported_id_foreign` (`reported_id`),
+  CONSTRAINT `reports_reported_id_foreign` FOREIGN KEY (`reported_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `reports_reporter_id_foreign` FOREIGN KEY (`reporter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -651,7 +654,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'admin','mechsya@honwaku.my.id',0,1,NULL,'$2y$12$.mmXJrKEZdC5DM4hc5hp8eeUqa/m8flNv8hTC.IAiDpDzeWMkkf8i',NULL,'2025-04-23 17:45:30','2025-04-23 17:45:30');
+(1,'admin','admin@honwaku.my.id',0,1,NULL,'$2y$12$uemGr183aF3vqA8UPcwY1eK1QTcKj7UhkKUEj20bQ6xQdSPZCyPNe',NULL,'2025-04-24 07:18:17','2025-04-24 07:18:17');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -664,4 +667,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-24  7:45:37
+-- Dump completed on 2025-04-24 21:22:14
