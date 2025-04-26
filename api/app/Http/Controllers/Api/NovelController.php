@@ -13,7 +13,7 @@ class NovelController extends Controller
 {
     public function showRecomendation()
     {
-        $novels = Novel::with("chapter")->orderBy('view', 'desc')->limit(10)->get();
+        $novels = Novel::with("chapter")->orderBy('view', 'desc')->limit(5)->get();
 
         return response()->json([
             "code" => 200,

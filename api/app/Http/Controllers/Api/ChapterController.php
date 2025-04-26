@@ -12,7 +12,7 @@ class ChapterController extends Controller
     {
         $chapters = Chapter::with("novel:id,title,genre,slug")
             ->orderBy('id', 'desc')
-            ->limit(10)
+            ->limit(5)
             ->get();
 
         return response()->json([
