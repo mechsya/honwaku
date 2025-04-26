@@ -8,16 +8,17 @@
     </style>
 @endsection
 
-@include('component.navbar', ['label' => 'Pengumuman', 'urlback' => '/'])
 
 @section('content')
+    @include('component.navbar', ['label' => 'Pengumuman', 'urlback' => '/'])
+
     <section class="lg:w-[80%] w-vdh m-auto px-4 text-white">
         <div class="border-b-[0.5px] border-white/10 py-2 flex items-center justify-between">
             <p class="text-white">Semua Berita</p>
-            <select class=" border-[0.5px] border-white/10 p-2 w-36 rounded outline-primary">
-                <option {{ $onScreen === 'semua' ? 'selected' : null }} value="semua">Semua</option>
-                <option {{ $onScreen === 'penting' ? 'selected' : null }} value="penting">Penting</option>
-                <option {{ $onScreen === 'umum' ? 'selected' : null }} value="umum">Umum</option>
+            <select class="border-[0.5px] border-white/10 p-2 w-36 rounded outline-primary">
+                <option class="text-white" {{ $onScreen === 'semua' ? 'selected' : null }} value="semua">Semua</option>
+                <option class="text-white" {{ $onScreen === 'penting' ? 'selected' : null }} value="penting">Penting</option>
+                <option class="text-white" {{ $onScreen === 'umum' ? 'selected' : null }} value="umum">Umum</option>
             </select>
         </div>
     </section>

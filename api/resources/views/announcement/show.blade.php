@@ -15,9 +15,10 @@
     </style>
 @endsection
 
-@include('component.navbar', ['label' => 'Pengumuman', 'urlback' => '/announcement'])
 
 @section('content')
+    @include('component.navbar', ['label' => 'Pengumuman', 'urlback' => '/announcement'])
+
     <section class="lg:w-[80%] w-full m-auto">
         <div class="border-b-[0.5px] border-white/10 p-6">
             <p class="text-2xl text-white font-serif text-center line-clamp-4">{{ $announcement->title }}</p>

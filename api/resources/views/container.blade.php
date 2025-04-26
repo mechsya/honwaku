@@ -23,27 +23,17 @@
     <link
         href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('build/assets/app-CUOG8wtT.css') }}">
+
+    @vite('resources/css/app.css')
+    {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-CUOG8wtT.css') }}"> --}}
+
     <link rel="manifest" href="{{ asset('build/manifest.json') }}" />
     @yield('head')
 </head>
 
 <body class="bg-base">
-    <div class="container-body">
-        @if (session('success'))
-            <div class="bg-green-400/10 mb-4 border-[0.5px] border-green-400 rounded-lg text-white text-sm p-4">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="bg-red-400/10 mb-4 border-[0.5px] border-red-400 rounded-lg text-white text-sm p-4">
-                {{ session('error') }}
-            </div>
-        @endif
-
-    </div>
     @yield('content')
+
     <script src="{{ asset('build/assets/app-eMHK6VFw.js') }}"></script>
 </body>
 

@@ -1,13 +1,17 @@
 @extends('container')
 
-@include('component.navbar', ['label' => 'Hapus Account', 'urlback' => '/account'])
 
 @section('content')
-    <div class="container-body">
+    @include('component.navbar', ['label' => 'Hapus Account', 'urlback' => '/account'])
+
+    <div class="wrapper">
+        @include('alert')
+
         <div class="bg-red-400/10 mb-4 border-[0.5px] border-red-400 rounded-lg text-white text-sm p-4">
             Dengan menghapus akun, artinya anda menyetujui akan penghapusan semua data yang telah anda simpan selama ini,
             seperti bookmark, riwayat bacaan dll
         </div>
+
 
         <form action="{{ route('account.delete') }}" method="POST" class="flex flex-col gap-4">
             @csrf

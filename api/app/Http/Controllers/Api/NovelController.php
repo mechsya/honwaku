@@ -45,7 +45,7 @@ class NovelController extends Controller
     public function showBySlug($slug)
     {
         $novel = Novel::with(["chapter" => function ($query) {
-            $query->orderBy('chapter', 'desc');
+            $query->orderBy('id', 'desc');
         }, "comment"])->where("slug", $slug)->first();
 
         $marked = Bookmark::where("user_id", request()->get("user"))->where("novel_id", $novel->id)->first();

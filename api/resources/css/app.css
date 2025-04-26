@@ -15,7 +15,7 @@
 }
 
 @layer components {
-    .container-body {
+    .wrapper {
         @apply p-4 lg:w-[50%] w-full m-auto;
     }
 

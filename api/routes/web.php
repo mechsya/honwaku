@@ -20,7 +20,7 @@ Route::prefix("report")->group(function () {
 });
 
 Route::prefix("account")->group(function () {
-    // Route::get("", [ReportController::class, "index"]);
+    Route::view("", "account.index");
 
     Route::view("delete", "account.delete");
     Route::post("delete", [AccountController::class, "delete"])->name("account.delete");

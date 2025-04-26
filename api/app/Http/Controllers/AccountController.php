@@ -17,11 +17,12 @@ class AccountController extends Controller
 
         $user = User::where("email", $email)->first();
 
+        if (!$user) return back()->with("error", "user tidak di temukam");
+
         $userAlreadyReported = Report::where("reporter_id", $user->id)->where("type", "delete-account")->first();
 
         if ($userAlreadyReported) return back()->with("error", "kamu sudah pernah melakukan pengajuan penghapusan akun, jika tidak segera di layani tolong kontak admin di alinia.meysa@gmail.com");
 
-        if (!$user) return back()->with("error", "user tidak di temukam");
 
         if (!Hash::check($password, $user->password)) return back()->with("error", "password salah");
 
@@ -36,4 +37,6 @@ class AccountController extends Controller
 
         return back()->with("success", "permintaan mu sedang di proses, tolong tunggu hinga kami menyelesaikanya");
     }
+
+    public function edit() {}
 }

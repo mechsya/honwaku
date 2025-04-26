@@ -1,9 +1,12 @@
 @extends('container')
 
-@include('component.navbar', ['label' => 'Pusat Laporan'])
 
 @section('content')
-    <section class="p-4 lg:w-[50%] w-full m-auto">
+    @include('component.navbar', ['label' => 'Pusat Laporan'])
+
+    <section class="wrapper">
+        @include('alert')
+
         <form method="POST"
             action="{{ route('report.comment.post', ['reporter' => request()->get('reporter'), 'comment' => request()->get('comment')]) }}">
             @csrf
