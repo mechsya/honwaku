@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AccountController;
 use App\Http\Controllers\Api\AnnouncementController;
 use App\Http\Controllers\Api\ChapterController;
 use App\Http\Controllers\Api\NovelController;
@@ -19,6 +20,10 @@ Route::prefix("user")->group(function () {
         Route::post("logout", [UserController::class, "logout"]);
         Route::post("refresh", [UserController::class, "refresh"]);
     });
+});
+
+Route::prefix("account")->group(function () {
+    Route::post("delete", [AccountController::class, "delete"])->middleware("auth:api");
 });
 
 Route::prefix("novel")->group(function () {
