@@ -1,4 +1,3 @@
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Container from "@/components/container";
 import Announcement from "@/components/home/announcement";
 import History from "@/components/home/history";
@@ -32,7 +31,7 @@ export default function HomeScreen() {
             onPress={() => router.navigate("/explore")}
             className="w-full p-4 border-[0.5px] flex-row justify-between items-center border-black/10 rounded-full"
           >
-            <Text className="font-roboto tracking-wide text-black">
+            <Text className="font-roboto tracking-wide text-black ">
               Cari Novel
             </Text>
             <Icon name={"arrow-forward"} size={20} color={COLOR.BLACK} />

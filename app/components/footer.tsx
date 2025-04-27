@@ -1,9 +1,7 @@
 import { COLOR } from "@/constants/color";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { router } from "expo-router";
 import { Text } from "react-native";
 import { TouchableOpacity, View } from "react-native";
-import Icon from "./icon";
 
 export default function Footer() {
   return (

@@ -93,9 +93,7 @@ export default function ReadScreen() {
             <View className="p-4">
               <RenderHTML
                 contentWidth={width}
-                tagsStyles={{
-                  p: { fontFamily: fontStyle, fontSize, lineHeight },
-                }}
+                baseStyle={{ fontFamily: fontStyle, fontSize, lineHeight }}
                 source={{
                   html: content.toString(),
                 }}
@@ -147,18 +145,21 @@ function NavigationBottom() {
         className="flex-1 flex-row items-center gap-4 px-4 py-4 border-r border-black/10"
       >
         <Icon name="list" size={22} color={COLOR.BLACK} />
-        <View>
-          <Text className="font-roboto text-base">{currentChapter?.title}</Text>
+        <View className="w-[90%]">
+          <Text className="font-roboto text-base " numberOfLines={1}>
+            {currentChapter?.title}
+          </Text>
           <Text className="text-base text-black/50 font-roboto">
             Chapter {currentChapter?.chapter} &middot; Volume{" "}
             {currentChapter?.volume}
           </Text>
         </View>
       </TouchableOpacity>
+
       {currentChapter?.next != null ? (
         <TouchableOpacity
           onPress={() => setCurrentSlug(currentChapter.next.slug)}
-          className="px-8 justify-center items-center"
+          className="px-6 justify-center items-center"
         >
           <Icon name="arrow-forward" size={22} color={COLOR.BLACK} />
         </TouchableOpacity>

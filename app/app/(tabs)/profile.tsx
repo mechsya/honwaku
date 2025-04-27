@@ -2,30 +2,31 @@ import * as Keychain from "react-native-keychain";
 import Container from "@/components/container";
 import { _refreshAfterLogout, _user } from "@/hooks/user";
 import { router } from "expo-router";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { cn } from "@/components/cn";
 import * as WebBrowser from "expo-web-browser";
-import { BASE_URL } from "@/utils/fetch";
+import Modal from "@/components/modal";
+import DeleteAccount from "@/components/modal/delete-account";
+import { useState } from "react";
+import Icon from "@/components/icon";
+import { COLOR } from "@/constants/color";
 
 export default function Page() {
   const [user, setUser] = useAtom(_user);
-  const setRefresh = useSetAtom(_refreshAfterLogout);
+  const [openDeleteAccount, setOpenDeleteAccount] = useState(false);
 
   const options = [
-    {
-      screen: "Global Chat",
-      callback: () => router.navigate("/chat-global"),
-    },
     {
       screen: "Follow us",
       callback: async () =>
         await WebBrowser.openBrowserAsync("https://linktr.ee/alinmeysa"),
     },
     {
-      screen: "Delete Account",
-      callback: async () =>
-        await WebBrowser.openBrowserAsync(BASE_URL + "/account/delete"),
+      screen: "Hapus Akun",
+      callback: () => {
+        setOpenDeleteAccount(true);
+      },
     },
     {
       screen: "Logout",
@@ -38,7 +39,12 @@ export default function Page() {
 
   return (
     <Container>
+      <Modal visible={openDeleteAccount} withKeyboard>
+        <DeleteAccount onClose={() => setOpenDeleteAccount(false)} />
+      </Modal>
+
       <Navbar />
+
       <View>
         {user ? (
           <View className="flex-row gap-4 px-4 py-4 border-b-[0.5px] border-black/10">
@@ -73,7 +79,7 @@ export default function Page() {
             !user
               ? options.filter(
                   (item) =>
-                    item.screen !== "Logout" && item.screen !== "Delete Account"
+                    item.screen !== "Logout" && item.screen !== "Hapus Akun"
                 )
               : options
           }
@@ -81,7 +87,7 @@ export default function Page() {
             <TouchableOpacity
               key={index}
               onPress={item.callback}
-              className="py-3 px-4 border-b-[0.5px] border-black/10"
+              className="py-3 px-4 border-b-[0.5px] border-black/10 flex-row gap-4"
             >
               <Text
                 className={cn(

@@ -15,7 +15,6 @@ import { post } from "@/utils/fetch";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { _refreshAfterLogout, _user } from "@/hooks/user";
 import { _reload } from "@/hooks/view";
-import Modal from "@/components/modal";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -70,15 +69,17 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <Stack
-      screenOptions={{
-        animation: "fade",
-        headerShown: false,
-        navigationBarColor: COLOR.WHITE,
-      }}
-    >
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    <>
+      <Stack
+        screenOptions={{
+          animation: "fade",
+          headerShown: false,
+          navigationBarColor: COLOR.WHITE,
+        }}
+      >
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </>
   );
 }

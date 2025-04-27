@@ -1,25 +1,34 @@
 import Container from "@/components/container";
-import CustomModal from "@/components/modal";
 import Icon from "@/components/icon";
 import { post } from "@/utils/fetch";
 import { _user } from "@/hooks/user";
-import { _modal } from "@/hooks/modal";
 import * as Keychain from "react-native-keychain";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { COLOR } from "@/constants/color";
-import { useRouter } from "expo-router";
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { router, useRouter } from "expo-router";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useState } from "react";
+import Modal from "@/components/modal";
+import Alert from "@/components/modal/alert";
 
 const _loading = atom(false);
 
 const AuthScreen = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [form, setForm] = useState({ username: "", email: "", password: "" });
-  const [user, setUser] = useAtom(_user);
-  const setModal = useSetAtom(_modal);
-  const router = useRouter();
+  const setUser = useSetAtom(_user);
   const setLoading = useSetAtom(_loading);
+  const [modal, setModal] = useState({
+    visible: false,
+    message: "",
+    header: "",
+  });
 
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -31,7 +40,12 @@ const AuthScreen = () => {
 
     if (!email || !password || (mode === "signup" && !username)) {
       setLoading(false);
-      return showModal("Input tidak boleh kosong", "sad");
+      setModal({
+        header: "Hmmm...",
+        message: "Email atau password kamu tidak boleh kosong",
+        visible: true,
+      });
+      return;
     }
 
     const url = mode === "signin" ? "user/signin" : "user/signup";
@@ -47,28 +61,39 @@ const AuthScreen = () => {
       if (mode === "signin") {
         setUser(result.data);
         await Keychain.setGenericPassword(result.data.data.email, password);
-        showModal(result.message, "happy", () => router.replace("/"));
+        setModal({
+          header: "Yeeee..",
+          message:
+            "Kamu telah berhasil login, silahkan tunggu sebentar kamu akan di pindahkan ke halaman beranda",
+          visible: true,
+        });
+
+        setTimeout(() => {
+          setModal({ ...modal, visible: false });
+          router.replace("/");
+        }, 2000);
       } else {
-        showModal(result.message, "happy", () => setMode("signin"));
+        setModal({
+          header: "Yeeee..",
+          message:
+            "Kamu telah berhasil register, silahkan tunggu sebentar kamu akan di pindahkan ke halaman login",
+          visible: true,
+        });
       }
+      setTimeout(() => {
+        setModal({ ...modal, visible: false });
+        setMode("signin");
+      }, 2000);
       clearForm();
     } else {
-      showModal(result.message, "sad");
+      setModal({
+        header: "Yahhh..",
+        message: result.message,
+        visible: true,
+      });
     }
-    setLoading(false);
-  };
 
-  const showModal = (
-    message: string,
-    mode: "happy" | "sad",
-    callback?: () => void
-  ) => {
-    setModal({ message, mode, visible: true });
-    if (callback)
-      setTimeout(() => {
-        setModal({ message, mode, visible: false });
-        callback();
-      }, 3000);
+    setLoading(false);
   };
 
   const clearForm = () => {
@@ -77,8 +102,16 @@ const AuthScreen = () => {
 
   return (
     <Container>
-      <Modal />
+      <Modal visible={modal.visible} withKeyboard>
+        <Alert
+          onClose={() => setModal({ ...modal, visible: false })}
+          message={modal.message}
+          header={modal.header}
+        />
+      </Modal>
+
       <Navbar label={mode === "signin" ? "Masuk" : "Daftar"} />
+
       <View className="flex-1  p-4">
         <View className="w-full h-full">
           {mode === "signup" && (
@@ -152,9 +185,6 @@ const InputField = ({
   />
 );
 
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Modal from "@/components/modal";
-
 const Button = ({ text, onPress }: any) => {
   const loading = useAtomValue(_loading);
 
@@ -162,9 +192,7 @@ const Button = ({ text, onPress }: any) => {
     <TouchableOpacity onPress={onPress} className="absolute bottom-5 w-full">
       {loading ? (
         <View className=" bg-primary text-white p-4  rounded ">
-          <View className="m-auto animate-spin">
-            <AntDesign name="loading1" size={16} color="white" />
-          </View>
+          <ActivityIndicator size={"small"} color={COLOR.WHITE} />
         </View>
       ) : (
         <Text className="bg-primary text-white p-4 rounded text-center font-robotoMedium">
@@ -174,15 +202,4 @@ const Button = ({ text, onPress }: any) => {
     </TouchableOpacity>
   );
 };
-
-const GoogleButton = () => (
-  <TouchableOpacity className="flex-row items-center justify-center gap-2 mt-6 p-3 border border-black/10 rounded">
-    <Image
-      source={require("@/assets/images/google.png")}
-      style={{ width: 20, height: 20 }}
-    />
-    <Text className="font-robotoMedium text-black">Login dengan Google</Text>
-  </TouchableOpacity>
-);
-
 export default AuthScreen;

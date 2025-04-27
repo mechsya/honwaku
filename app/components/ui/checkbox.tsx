@@ -6,7 +6,7 @@ type CheckboxProps = {
   label: string;
   index: number;
   onclick: (genre: string) => void;
-  isActive: boolean; // <<< Tambah props ini
+  isActive: boolean;
 };
 
 export default function Checkbox(props: CheckboxProps) {

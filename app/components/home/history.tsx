@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function History() {
-  const user = useAtomValue(_user); // selalu dipanggil
+  const user = useAtomValue(_user);
   const [history, setHistory] = useState<any>({});
-  const refreshHistory = useAtomValue(_refreshHistory); // selalu dipanggil
+  const refreshHistory = useAtomValue(_refreshHistory);
 
   useEffect(() => {
     if (user?.data) {
@@ -42,7 +42,7 @@ export default function History() {
             className="border-[0.5px] rounded-lg border-black/10 p-4"
           >
             <Text
-              className="font-serif text-lg text-black leading-6"
+              className="font-serif text-lg text-black  leading-6"
               numberOfLines={2}
             >
               {history?.chapter?.title}

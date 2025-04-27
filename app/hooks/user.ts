@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { atom } from "jotai";
 
 type User = {
   data: {

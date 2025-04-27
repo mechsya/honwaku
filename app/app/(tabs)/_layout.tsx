@@ -9,6 +9,7 @@ const screens = [
   { name: "index", icon: "home", label: "Beranda" },
   { name: "explore", icon: "search", label: "Pencarian" },
   { name: "library", icon: "local-library", label: "Perpustakaan" },
+  { name: "chat-global", icon: "chat", label: "Chat Global" },
   { name: "profile", icon: "", label: "Profile" },
 ];
 
@@ -18,7 +19,10 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarStyle: styles.tabContainer,
+        tabBarStyle: {
+          ...styles.tabContainer,
+          borderColor: "rgba(0,0,0,.1)",
+        },
       }}
     >
       {screens.map((screen, index) => {
@@ -51,7 +55,7 @@ function TabBarButton(props: any) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="flex flex-1 flex-col justify-center items-center"
+      className="flex flex-1 flex-col justify-center items-center bg-white"
     >
       {name === "profile" ? (
         <Image
@@ -86,7 +90,6 @@ const styles = StyleSheet.create({
   tabContainer: {
     borderTopWidth: 0.5,
     shadowColor: "transparent",
-    borderColor: "rgba(0,0,0,.1)",
     height: 60,
   },
 });

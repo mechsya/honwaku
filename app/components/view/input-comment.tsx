@@ -8,39 +8,41 @@ import {
 import Icon from "../icon";
 import { post } from "@/utils/fetch";
 import { useState } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { _reload } from "@/hooks/view";
 import { _user } from "@/hooks/user";
 import { _novel } from "@/hooks/novel";
-import { _modal } from "@/hooks/modal";
+import Modal from "../modal";
+import Alert from "../modal/alert";
 
 export default function InputComment() {
   const [commentInput, setCommentInput] = useState<string>("");
   const [reload, setReload] = useAtom(_reload);
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState({
+    visible: false,
+    message: "",
+    header: "",
+  });
 
-  const setModal = useSetAtom(_modal);
   const user = useAtomValue(_user);
   const novel = useAtomValue(_novel);
 
   const handleComment = () => {
     if (commentInput === "") {
-      setModal({
-        mode: "sad",
-        message: "Input tidak boleh kosong",
+      return setModal({
         visible: true,
+        message: "Pesan tidak boleh kosong",
+        header: "Hmmm...",
       });
-      return;
     }
 
-    if (!user) {
-      setModal({
-        mode: "sad",
-        message: "Harus login terlebih dahulu",
+    if (!user)
+      return setModal({
         visible: true,
+        message: "Kamu harus login dahulu sebelum mengirim pesan",
+        header: "Ayo login!",
       });
-      return;
-    }
 
     post({
       url: "comment",
@@ -61,6 +63,13 @@ export default function InputComment() {
 
   return (
     <>
+      <Modal visible={modal.visible} withKeyboard>
+        <Alert
+          header={modal.header}
+          message={modal.message}
+          onClose={() => setModal({ ...modal, visible: false })}
+        />
+      </Modal>
       <View className="bg-white flex-row border-black/10 items-center w-full px-4 py-3">
         <TextInput
           value={commentInput}

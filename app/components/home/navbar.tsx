@@ -1,12 +1,10 @@
 import { Image, TouchableOpacity, View } from "react-native";
 import Icon from "../icon";
 import { COLOR } from "@/constants/color";
-import { Link } from "expo-router";
 
 export default function Navbar() {
   return (
     <>
-      {/* <Link href={"/profile"}>Login Debug</Link> */}
       <View className="navbar-container">
         <Image
           style={{ width: 40, height: 40 }}

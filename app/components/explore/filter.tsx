@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { _filterRef, _genresSelected } from "@/hooks/explore";
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { cn } from "../cn";
 import Genre from "./genre";
 

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/*.{js,jsx,ts,tsx}",
@@ -14,6 +15,7 @@ module.exports = {
         serif: "PTSerif",
       },
       colors: {
+        background: "#18181B",
         black: "#2C2C2C",
         primary: "#6A4CB6",
         base: "#18181b",

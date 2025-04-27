@@ -16,8 +16,8 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useEffect, useState, useCallback } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Image, ScrollView, Text, View } from "react-native";
-import { _modal } from "@/hooks/modal";
 import Footer from "@/components/footer";
+import Alert from "@/components/modal/alert";
 import Modal from "@/components/modal";
 
 function colorStatus(status?: string) {
@@ -35,10 +35,14 @@ export default function ViewScreen() {
   const { slug } = useLocalSearchParams();
   const [novel, setNovel] = useAtom(_novel);
   const user = useAtomValue(_user);
-  const setModal = useSetAtom(_modal);
   const renderComponent = useAtomValue(_renderComponent);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
+  const [modal, setModal] = useState({
+    visible: false,
+    message: "",
+    header: "",
+  });
 
   const fetchNovel = useCallback(() => {
     if (!slug) return;
@@ -54,14 +58,12 @@ export default function ViewScreen() {
   }, [fetchNovel, reload]);
 
   const toggleBookmark = async () => {
-    if (!user) {
-      setModal({
-        message: "Tolong login dahulu sebelum menambahkan bookmark",
-        mode: "sad",
+    if (!user)
+      return setModal({
         visible: true,
+        message: "Kamu harus login dahulu sebelum mengirim pesan",
+        header: "Ayo login!",
       });
-      return;
-    }
 
     if (!novel) return;
 
@@ -98,8 +100,14 @@ export default function ViewScreen() {
 
   return (
     <GestureHandlerRootView>
+      <Modal visible={modal.visible} withKeyboard>
+        <Alert
+          header={modal.header}
+          message={modal.message}
+          onClose={() => setModal({ ...modal, visible: false })}
+        />
+      </Modal>
       <Container>
-        <Modal />
         <Navbar />
         <ScrollView className="flex-1">
           <View className={cn("w-full h-2", colorStatus(novel.status))} />

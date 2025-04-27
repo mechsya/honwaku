@@ -1,1 +1,15 @@
-export const GENRE =["fantasy", "action", "drama", "romance", "adult", "medieval", "slice of life", "adventure", "comedy", "horror", "mistery", "thriller", "historical"]
+export const GENRE = [
+  "fantasy",
+  "action",
+  "drama",
+  "romance",
+  "adult",
+  "medieval",
+  "slice of life",
+  "adventure",
+  "comedy",
+  "horror",
+  "mistery",
+  "thriller",
+  "historical",
+];

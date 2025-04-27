@@ -1,12 +1,11 @@
 import Container from "@/components/container";
 import Navbar from "@/components/chat-global/navbar";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import InputComment from "@/components/chat-global/input";
+import InputComment from "@/components/chat-global/input-comment";
 import { useEffect, useState } from "react";
 import { get } from "@/utils/fetch";
 import { useAtom, useAtomValue } from "jotai";
 import { _reload } from "@/hooks/view";
-import Modal from "@/components/modal";
 
 export default function ChatGlobalScreen() {
   const [globalChat, setGlobalChat] = useState<[] | any>([]);
@@ -18,13 +17,12 @@ export default function ChatGlobalScreen() {
 
   return (
     <Container>
-      <Modal />
       <Navbar />
+      <InputComment />
       <FlatList
         data={globalChat}
         renderItem={(item) => <CommentItem {...item.item} />}
       />
-      <InputComment />
     </Container>
   );
 }

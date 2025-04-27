@@ -3,7 +3,6 @@ import { FlatList } from "react-native-gesture-handler";
 import Checkbox from "../ui/checkbox";
 import { useAtom } from "jotai";
 import { _genresSelected } from "@/hooks/explore";
-import { useEffect } from "react";
 
 export default function Genre() {
   const [genres, setGenres] = useAtom(_genresSelected);

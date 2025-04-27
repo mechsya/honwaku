@@ -6,7 +6,6 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import * as WebBrowser from "expo-web-browser";
-import Icon from "../icon";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLOR } from "@/constants/color";
 import { useEffect, useState } from "react";
@@ -17,8 +16,6 @@ import { _reload } from "@/hooks/view";
 import Wrapper from "../wrapper";
 import InputComment from "./input-comment";
 import { _user } from "@/hooks/user";
-import { _modal } from "@/hooks/modal";
-import Modal from "../modal";
 
 export default function Comment() {
   const [comments, setComment] = useState<any>([]);
@@ -48,21 +45,13 @@ export default function Comment() {
 
 const CommentItem = (props: any) => {
   const user = useAtomValue(_user);
-  const setModal = useSetAtom(_modal);
 
   const [comment, setComment] = useState<any>(props);
 
   const [likeLoading, setLikeLoading] = useState(false);
 
   const handleLike = async () => {
-    if (!user) {
-      setModal({
-        mode: "sad",
-        message: "Harus login terlebih dahulu",
-        visible: true,
-      });
-      return;
-    }
+    if (!user) return;
 
     if (likeLoading) return;
 
@@ -87,14 +76,7 @@ const CommentItem = (props: any) => {
   };
 
   const handleReport = async () => {
-    if (!user) {
-      setModal({
-        mode: "sad",
-        message: "Harus login terlebih dahulu",
-        visible: true,
-      });
-      return;
-    }
+    if (!user) return;
 
     await WebBrowser.openBrowserAsync(
       BASE_URL + `/report/comment?user=${user?.data.id}&comment=${props.id}`

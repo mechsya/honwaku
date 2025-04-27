@@ -7,7 +7,7 @@ import {
 export default function Banner() {
   return (
     <BannerAd
-      unitId={"ca-app-pub-9927932498877675/1221621280"}
+      unitId={TestIds.BANNER}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
     />
   );
