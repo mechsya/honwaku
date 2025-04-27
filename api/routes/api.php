@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\GlobalChatController;
 use App\Http\Controllers\Api\HistoryController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReportController;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("user")->group(function () {
@@ -65,6 +67,8 @@ Route::prefix("event")->group(function () {
 Route::prefix("comment")->group(function () {
     Route::get("", [CommentController::class, "get"]);
     Route::get("show", [CommentController::class, "show"]);
+
+    Route::post("report", [ReportController::class, 'report']);
 
     Route::middleware("auth:api")->post("like", [CommentController::class, "updateLike"]);
     Route::middleware("auth:api")->post("", [CommentController::class, "create"]);

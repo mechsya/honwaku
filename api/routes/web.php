@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view("", "home.index");
 Route::view("privacy", "privacy");
+
 Route::view("delete-account", "delete-account");
 
 Route::prefix("announcement")->group(function () {
