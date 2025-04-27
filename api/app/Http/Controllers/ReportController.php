@@ -47,7 +47,7 @@ class ReportController extends Controller
 
         return response()->json([
             "code" => 200,
-            "message" => "permintaan mu sedang di proses, tolong tunggu hinga kami menyelesaikanya",
+            "message" => "permintaan mu sedang di proses, tolong tunggu hingga kami menyelesaikanya",
             "data" => null
         ]);
     }
