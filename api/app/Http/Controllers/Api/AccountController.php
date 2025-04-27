@@ -40,7 +40,7 @@ class AccountController extends Controller
 
         if (!$report) return response()->json(["code" => 500, "message" => "server sedang mengalami gangguan tolong coba lagi  nanti", "data" => null], 500);
 
-        return response()->json(["code" => 200, "message" => "permintaan mu sedang di proses, tolong tunggu hinga kami menyelesaikanya", "data" => null]);
+        return response()->json(["code" => 200, "message" => "permintaan mu sedang di proses, tolong tunggu hingga kami menyelesaikanya", "data" => null]);
     }
 
     public function edit() {}
