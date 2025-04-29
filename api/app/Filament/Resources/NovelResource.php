@@ -74,8 +74,7 @@ class NovelResource extends Resource
                             "thriller" => "Thriller",
                             "historical" => "Historical"
                         ]),
-                    TextInput::make('ranting')->required()->label("Ranting Novel")
-                        ->numeric(),
+                    TextInput::make('ranting')->required()->label("Ranting Novel"),
                     Select::make("adult")->label("R18+")->default(0)->options([
                         1 => "Yes",
                         0 => "No"

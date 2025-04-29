@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string("author");
             $table->enum("status", ["complete", "ongoing", "new"]);
             $table->string("cover");
-            $table->float("ranting")->default(0);
+            $table->string("ranting")->default("N/A");
             $table->string("genre");
             $table->text("sinopsis")->nullable();
             $table->bigInteger("view")->default(0);
