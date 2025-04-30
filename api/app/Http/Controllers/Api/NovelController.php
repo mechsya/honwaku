@@ -13,7 +13,7 @@ class NovelController extends Controller
 {
     public function showRecomendation()
     {
-        $novels = Novel::with("chapter")->orderBy('view', 'desc')->limit(5)->get();
+        $novels = Novel::orderBy('view', 'desc')->limit(5)->get();
 
         return response()->json([
             "code" => 200,
@@ -21,15 +21,15 @@ class NovelController extends Controller
             "data" => $novels
         ],  200);
     }
+
     public function search()
     {
         $query = request()->get("q");
         $genre = request()->get("genre");
 
-        $novels = Novel::with("chapter")
-            ->when($query, function ($q) use ($query) {
-                $q->where("title", "LIKE", "%" . $query . "%");
-            })
+        $novels = Novel::when($query, function ($q) use ($query) {
+            $q->where("title", "LIKE", "%" . $query . "%");
+        })
             ->when($genre, function ($q) use ($genre) {
                 $q->where("genre", "LIKE", "%" . $genre . "%");
             })
