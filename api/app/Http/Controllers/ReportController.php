@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Report;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -16,8 +14,12 @@ class ReportController extends Controller
 
         $comment = Comment::with("user")->find($comment_id);
 
-        if (!$comment) return response()
-            ->json(["code" => 404, "message" => "komentar yang anda laporkan sudah tidak ada", "data" => null]);
+        if (!$comment)
+            return response()->json([
+                "code" => 404,
+                "message" => "komentar yang anda laporkan sudah tidak ada",
+                "data" => null
+            ]);
 
         $reportAlreadyExist = Report::where("reporter_id", $reporter_id)
             ->where("target_id", $comment->id)

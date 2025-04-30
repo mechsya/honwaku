@@ -16,12 +16,13 @@ return new class extends Migration
             $table->foreignId("novel_id")
                 ->references("id")
                 ->on("novels")
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->string("slug")->unique();
             $table->string("title");
             $table->string("volume", 10);
             $table->string("chapter", 10);
-            $table->text("content");
+            $table->longText("content");
             $table->bigInteger("view")->default(0);
             $table->timestamps();
         });

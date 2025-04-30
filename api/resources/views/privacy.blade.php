@@ -2,7 +2,7 @@
 
 @section('content')
     @include('component.navbar', ['label' => 'Kebijakan Privasi', 'urlback' => '/'])
-    <div class="container-body font-roboto text-white">
+    <div class="wrapper font-roboto text-white/70">
         <h1>Kebijakan Privasi – Honwaku</h1>
         <p><em>Terakhir diperbarui: 24 April 2025</em></p>
         &nbsp;

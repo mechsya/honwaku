@@ -15,7 +15,12 @@ class Report extends Model
         });
     }
 
-    public function user()
+    public function reported()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reporter()
     {
         return $this->belongsTo(User::class);
     }

@@ -11,7 +11,6 @@ use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -95,7 +94,8 @@ class NovelResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make("id")->label("ID"),
+                TextColumn::make("id")->label("ID")
+                    ->sortable(),
                 TextColumn::make("title")->searchable()->label("Title"),
                 TextColumn::make("ranting")->label("Ranting"),
                 TextColumn::make("status")->label("Status"),

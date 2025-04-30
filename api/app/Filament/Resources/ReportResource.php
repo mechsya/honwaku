@@ -6,10 +6,13 @@ use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Resources\ReportResource\RelationManagers;
 use App\Models\Report;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -27,23 +30,29 @@ class ReportResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                //
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make("user.name")->label("Pelapor"),
-                TextColumn::make("comment.user.name")->label("Pelaku"),
+                TextColumn::make("reporter.name")->label("Pelapor"),
+                TextColumn::make("reported.name")->label("Pelaku"),
                 TextColumn::make("type")->label("Atas Laporan"),
-                TextColumn::make("comment.content")->label("Content"),
+                TextColumn::make("reason")->label("Alasan"),
+                SelectColumn::make('status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'finished' => 'Finished',
+                        'reject' => 'Rejected',
+                    ])
+                    ->sortable()
+                    ->searchable()
+                    ->label('Status')
+                    ->selectablePlaceholder(false),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

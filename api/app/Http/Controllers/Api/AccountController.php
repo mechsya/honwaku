@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 
 class AccountController extends Controller
 {
@@ -19,7 +17,11 @@ class AccountController extends Controller
 
         $user = User::where("email", $email)->first();
 
-        if (!$user) return response()->json(["code" => 404, "message" => "Pengguna tidak ditemukan", "data" => null], 404);
+        if (!$user) return response()->json([
+            "code" => 404,
+            "message" => "Pengguna tidak ditemukan",
+            "data" => null
+        ], 404);
 
         $userAlreadyReported = Report::where("reporter_id", $user->id)->where("type", "delete-account")->first();
 
@@ -29,7 +31,12 @@ class AccountController extends Controller
             "data" => null
         ], 400);
 
-        if (!Hash::check($password, $user->password)) return  response()->json(["code" => 400, "message" => "Password salah", "data" => null], 400);
+        if (!Hash::check($password, $user->password))
+            return response()->json([
+                "code" => 400,
+                "message" => "Password salah",
+                "data" => null
+            ], 400);
 
         $report = Report::create([
             "reporter_id" => $user->id,
@@ -38,9 +45,17 @@ class AccountController extends Controller
             "type" => "delete-account",
         ]);
 
-        if (!$report) return response()->json(["code" => 500, "message" => "server sedang mengalami gangguan tolong coba lagi  nanti", "data" => null], 500);
+        if (!$report) return response()->json([
+            "code" => 500,
+            "message" => "server sedang mengalami gangguan tolong coba lagi  nanti",
+            "data" => null
+        ], 500);
 
-        return response()->json(["code" => 200, "message" => "permintaan mu sedang di proses, tolong tunggu hingga kami menyelesaikanya", "data" => null]);
+        return response()->json([
+            "code" => 200,
+            "message" => "permintaan mu sedang di proses, tolong tunggu hingga kami menyelesaikanya",
+            "data" => null
+        ]);
     }
 
     public function edit() {}

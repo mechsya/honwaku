@@ -44,7 +44,8 @@ class ChapterRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                TextColumn::make("id")->label("ID"),
+                TextColumn::make("id")->label("ID")
+                    ->sortable(),
                 TextColumn::make('title')->searchable(),
                 TextColumn::make("volume")->label("Volume"),
                 TextColumn::make("chapter")->label("Chapter"),
