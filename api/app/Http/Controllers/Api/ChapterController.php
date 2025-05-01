@@ -10,7 +10,7 @@ class ChapterController extends Controller
 {
     public function showUpdate()
     {
-        $chapters = Chapter::select('id', 'title', 'slug', 'content', 'novel_id', 'volume', 'chapter', 'updated_at')
+        $chapters = Chapter::select('id', 'title', 'slug', 'novel_id', 'volume', 'chapter', 'updated_at')
             ->with('novel:id,title,genre,slug')
             ->orderByDesc('id')
             ->limit(5)
