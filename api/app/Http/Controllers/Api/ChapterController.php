@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chapter;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class ChapterController extends Controller
 {
     public function showUpdate()
     {
-        $chapters = Chapter::with("novel:id,title,genre,slug")
-            ->orderBy('id', 'desc')
+        $chapters = Chapter::select('id', 'title', 'slug', 'content', 'novel_id', 'volume', 'chapter', 'updated_at')
+            ->with('novel:id,title,genre,slug')
+            ->orderByDesc('id')
             ->limit(5)
             ->get();
 
@@ -19,19 +20,53 @@ class ChapterController extends Controller
             "code" => 200,
             "message" => "Berhasil mengambil data",
             "data" => $chapters
-        ], 200);
+        ]);
+    }
+
+    public function showByNovel(Request $request)
+    {
+        $novelId = $request->get("novel_id");
+
+        $chapters = Chapter::select('id', 'title', 'slug', "volume", "chapter", 'updated_at')
+            ->where("novel_id", $novelId)
+            ->orderBy('id') // urutkan jika perlu
+            ->get();
+
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $chapters
+        ]);
     }
 
     public function showBySlug($slug)
     {
-        $chapter = Chapter::with("novel:id,title,cover")->where("slug", $slug)->first();
+        $chapter = Chapter::with('novel:id,title,cover')
+            ->select('id', 'title', 'slug', 'content', 'novel_id')
+            ->where('slug', $slug)
+            ->first();
 
-        $chapter->next = Chapter::where("id", $chapter->id + 1)->first();
+        if (!$chapter) {
+            return response()->json([
+                "code" => 404,
+                "message" => "Chapter tidak ditemukan",
+                "data" => null
+            ], 404);
+        }
+
+        // Cari next chapter berdasarkan ID lebih besar dalam novel yang sama
+        $next = Chapter::where("novel_id", $chapter->novel_id)
+            ->where("id", ">", $chapter->id)
+            ->orderBy("id")
+            ->select('id', 'title', 'slug')
+            ->first();
+
+        $chapter->next = $next;
 
         return response()->json([
             "code" => 200,
             "message" => "Berhasil mengambil data",
             "data" => $chapter
-        ], 200);
+        ]);
     }
 }

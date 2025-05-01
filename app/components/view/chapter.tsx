@@ -1,8 +1,10 @@
-import { _novel } from "@/hooks/novel";
 import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Wrapper from "../wrapper";
+import { _novel } from "@/hooks/novel";
+import { useMemo } from "react";
+import { chapterAtomFamily } from "@/atom/chapter";
 
 type ChapterType = {
   title: string;
@@ -13,14 +15,16 @@ type ChapterType = {
 };
 
 type ChapterListProps = {
-  chapters: ChapterType[] | any;
-  loading: boolean;
+  novelId: number | string | undefined;
 };
 
-export default function Chapter({ chapters, loading }: ChapterListProps) {
+export default function Chapter({ novelId }: ChapterListProps) {
+  const chapterAtom = useMemo(() => chapterAtomFamily(novelId!), [novelId]);
+  const chapters = useAtomValue(chapterAtom);
+
   return (
-    <Wrapper data={chapters} loading={loading}>
-      {chapters.map((item: any, index: any) => (
+    <Wrapper data={chapters} loading={!chapters.length}>
+      {chapters.map((item, index) => (
         <ChapterItem chapter={item} key={index} />
       ))}
     </Wrapper>

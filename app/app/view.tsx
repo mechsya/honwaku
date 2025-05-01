@@ -13,7 +13,7 @@ import { _renderComponent } from "@/hooks/view";
 import { get, post } from "@/utils/fetch";
 import { useLocalSearchParams } from "expo-router";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Image, ScrollView, Text, View } from "react-native";
 import Footer from "@/components/footer";
@@ -37,7 +37,6 @@ export default function ViewScreen() {
   const user = useAtomValue(_user);
   const renderComponent = useAtomValue(_renderComponent);
   const [loading, setLoading] = useState(true);
-  const [reload, setReload] = useState(false);
   const [modal, setModal] = useState({
     visible: false,
     message: "",
@@ -45,42 +44,52 @@ export default function ViewScreen() {
   });
 
   const fetchNovel = useCallback(() => {
-    if (!slug) return;
+    if (!slug || !user?.data?.id) return;
     get({
-      url: `novel/${slug}?user=${user?.data.id}`,
+      url: `novel/${slug}?user=${user.data.id}`,
       setter: setNovel,
       loading: setLoading,
     });
-  }, [slug]);
+  }, [slug, user]);
 
   useEffect(() => {
     fetchNovel();
-  }, [fetchNovel, reload]);
+  }, [fetchNovel]);
 
   const toggleBookmark = async () => {
-    if (!user)
+    if (!user) {
       return setModal({
         visible: true,
         message: "Kamu harus login dahulu sebelum mengirim pesan",
         header: "Ayo login!",
       });
+    }
 
     if (!novel) return;
 
     const url = novel.marked
-      ? `bookmark?user=${user?.data.id}&novel=${novel.id}`
+      ? `bookmark?user=${user.data.id}&novel=${novel.id}`
       : "bookmark";
 
-    const body = novel.marked ? null : { user: user?.data.id, novel: novel.id };
+    const body = novel.marked ? null : { user: user.data.id, novel: novel.id };
 
     const result = await post({
       type: novel.marked ? "DELETE" : "POST",
       url,
-      header: { Authorization: `Bearer ${user?.token}` },
+      header: { Authorization: `Bearer ${user.token}` },
       body,
     });
-    if (result) setReload((prev) => !prev);
+
+    if (result) {
+      setNovel((prev: any) => ({ ...prev, marked: !prev.marked }));
+    }
   };
+
+  const MemoizedChapter = useMemo(() => {
+    return renderComponent === "chapter" ? (
+      <Chapter novelId={novel?.id} />
+    ) : null;
+  }, [renderComponent, novel?.chapter, loading]);
 
   if (loading) {
     return (
@@ -111,7 +120,7 @@ export default function ViewScreen() {
         <Navbar />
         <ScrollView className="flex-1">
           <View className={cn("w-full h-2", colorStatus(novel.status))} />
-          <View className="p-4 flex-row border-b-[0.5px] gap-2  border-black/10">
+          <View className="p-4 flex-row border-b-[0.5px] gap-2 border-black/10">
             <View className="flex-1">
               <Text className="font-serif text-lg text-black leading-6">
                 {novel.title}
@@ -140,9 +149,7 @@ export default function ViewScreen() {
 
           <Description description={novel.sinopsis} />
           <TabBar />
-          {renderComponent === "chapter" && (
-            <Chapter chapters={novel.chapter} loading={loading} />
-          )}
+          {MemoizedChapter}
           {renderComponent === "komentar" && <Comment />}
           <Footer />
         </ScrollView>

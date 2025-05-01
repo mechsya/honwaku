@@ -52,9 +52,9 @@ export default function CardNovel({
         <Text className="font-roboto capitalize text-black/50 text-sm">
           <Text className={cn("capitalize", getStatusColor(status))}>
             {status}
-          </Text>
-          &bull; {genre.replace(/,/g, " • ")} &bull; {ranting} &bull; 160
-          Chapter &bull; {view} kali dibaca &bull; {created_at}
+          </Text>{" "}
+          &bull; {genre.replace(/,/g, " • ")} &bull; {ranting} &bull; {view}{" "}
+          kali dibaca &bull; {created_at}
         </Text>
       </View>
 

@@ -1,7 +1,7 @@
 import { _user } from "@/hooks/user";
 import { get } from "@/utils/fetch";
 import { useAtomValue } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TouchableOpacity, Text } from "react-native";
 import { FlatList } from "react-native";
 import Wrapper from "../wrapper";
@@ -22,7 +22,7 @@ export default function History() {
         loading: setLoading,
       });
     }
-  }, []);
+  }, [user]);
 
   if (!user) return <LoginAlert />;
 

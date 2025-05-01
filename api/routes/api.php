@@ -35,6 +35,7 @@ Route::prefix("novel")->group(function () {
 });
 
 Route::prefix("chapter")->group(function () {
+    Route::get("", [ChapterController::class, "showByNovel"]);
     Route::get("update", [ChapterController::class, "showUpdate"]);
     Route::get("{slug}", [ChapterController::class, "showBySlug"]);
 });
