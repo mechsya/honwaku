@@ -12,14 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chapters', function (Blueprint $table) {
-            $table->id();
+            $table->id()
+                ->index();
             $table->foreignId("novel_id")
+                ->index()
                 ->references("id")
                 ->on("novels")
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
-            $table->string("slug")->unique();
-            $table->string("title");
+            $table->string("slug")
+                ->index()
+                ->unique();
+            $table->string("title")
+                ->index();
+            $table->integer("content_length")
+                ->default(0);
             $table->string("volume", 10);
             $table->string("chapter", 10);
             $table->longText("content");

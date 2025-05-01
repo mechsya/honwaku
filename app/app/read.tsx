@@ -216,7 +216,8 @@ function ChapterSheet() {
               {item.title}
             </Text>
             <Text className="font-roboto text-black/50 text-base">
-              Chapter {item.chapter} &middot; Volume {item.volume}
+              Chapter {item.chapter} &middot; Volume {item.volume} &middot;{" "}
+              {item.updated_at}
             </Text>
           </TouchableOpacity>
         )}

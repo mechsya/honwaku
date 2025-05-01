@@ -7,20 +7,20 @@ import Description from "@/components/view/description";
 import InfoBar from "@/components/view/info-bar";
 import Navbar from "@/components/view/navbar";
 import TabBar from "@/components/view/tab-bar";
+import Footer from "@/components/footer";
+import Alert from "@/components/modal/alert";
+import Modal from "@/components/modal";
 import { _novel } from "@/hooks/novel";
 import { _user } from "@/hooks/user";
 import { _renderComponent } from "@/hooks/view";
 import { get, post } from "@/utils/fetch";
 import { useLocalSearchParams } from "expo-router";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Image, ScrollView, Text, View } from "react-native";
-import Footer from "@/components/footer";
-import Alert from "@/components/modal/alert";
-import Modal from "@/components/modal";
 
-function colorStatus(status?: string) {
+function getStatusColor(status?: string) {
   switch (status) {
     case "complete":
       return "bg-red-400";
@@ -36,6 +36,7 @@ export default function ViewScreen() {
   const [novel, setNovel] = useAtom(_novel);
   const user = useAtomValue(_user);
   const renderComponent = useAtomValue(_renderComponent);
+
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState({
     visible: false,
@@ -43,38 +44,41 @@ export default function ViewScreen() {
     header: "",
   });
 
-  const fetchNovel = useCallback(() => {
-    if (!slug || !user?.data?.id) return;
-    get({
-      url: `novel/${slug}?user=${user.data.id}`,
+  const fetchNovel = useCallback(async () => {
+    if (!slug) return;
+
+    setLoading(true);
+    await get({
+      url: `novel/${slug}?user=${user?.data?.id || ""}`,
       setter: setNovel,
-      loading: setLoading,
     });
-  }, [slug, user]);
+    setLoading(false);
+  }, [slug, user?.data?.id, setNovel]);
 
   useEffect(() => {
     fetchNovel();
   }, [fetchNovel]);
 
-  const toggleBookmark = async () => {
+  const handleBookmarkToggle = async () => {
     if (!user) {
       return setModal({
         visible: true,
-        message: "Kamu harus login dahulu sebelum mengirim pesan",
+        message: "Kamu harus login dahulu untuk menambahkan bookmark",
         header: "Ayo login!",
       });
     }
 
     if (!novel) return;
 
-    const url = novel.marked
+    const isBookmarked = novel.marked;
+    const url = isBookmarked
       ? `bookmark?user=${user.data.id}&novel=${novel.id}`
       : "bookmark";
 
-    const body = novel.marked ? null : { user: user.data.id, novel: novel.id };
+    const body = isBookmarked ? null : { user: user.data.id, novel: novel.id };
 
     const result = await post({
-      type: novel.marked ? "DELETE" : "POST",
+      type: isBookmarked ? "DELETE" : "POST",
       url,
       header: { Authorization: `Bearer ${user.token}` },
       body,
@@ -85,11 +89,11 @@ export default function ViewScreen() {
     }
   };
 
-  const MemoizedChapter = useMemo(() => {
-    return renderComponent === "chapter" ? (
-      <Chapter novelId={novel?.id} />
-    ) : null;
-  }, [renderComponent, novel?.chapter, loading]);
+  const MemoizedComponent = useMemo(() => {
+    if (renderComponent === "chapter") return <Chapter novelId={novel?.id} />;
+    if (renderComponent === "komentar") return <Comment />;
+    return null;
+  }, [renderComponent, novel?.id]);
 
   if (loading) {
     return (
@@ -116,10 +120,14 @@ export default function ViewScreen() {
           onClose={() => setModal({ ...modal, visible: false })}
         />
       </Modal>
+
       <Container>
         <Navbar />
         <ScrollView className="flex-1">
-          <View className={cn("w-full h-2", colorStatus(novel.status))} />
+          {/* Status Indicator */}
+          <View className={cn("w-full h-2", getStatusColor(novel.status))} />
+
+          {/* Header Info */}
           <View className="p-4 flex-row border-b-[0.5px] gap-2 border-black/10">
             <View className="flex-1">
               <Text className="font-serif text-lg text-black leading-6">
@@ -139,18 +147,19 @@ export default function ViewScreen() {
             />
           </View>
 
+          {/* Info Bar */}
           <InfoBar
             marked={novel.marked}
-            handle={toggleBookmark}
+            handle={handleBookmarkToggle}
             ranting={novel.ranting}
             view={novel.view}
             slug={novel.slug}
           />
 
+          {/* Description & Content */}
           <Description description={novel.sinopsis} />
           <TabBar />
-          {MemoizedChapter}
-          {renderComponent === "komentar" && <Comment />}
+          {MemoizedComponent}
           <Footer />
         </ScrollView>
       </Container>

@@ -10,7 +10,16 @@ class ChapterController extends Controller
 {
     public function showUpdate()
     {
-        $chapters = Chapter::select('id', 'title', 'slug', 'novel_id', 'volume', 'chapter', 'updated_at')
+        $chapters = Chapter::select(
+            'id',
+            'title',
+            'slug',
+            'content_length',
+            'novel_id',
+            'volume',
+            'chapter',
+            'updated_at'
+        )
             ->with('novel:id,title,genre,slug')
             ->orderByDesc('id')
             ->limit(5)
@@ -27,9 +36,16 @@ class ChapterController extends Controller
     {
         $novelId = $request->get("novel_id");
 
-        $chapters = Chapter::select('id', 'title', 'slug', "volume", "chapter", 'updated_at')
+        $chapters = Chapter::select(
+            'id',
+            'title',
+            'slug',
+            "volume",
+            "chapter",
+            'updated_at'
+        )
             ->where("novel_id", $novelId)
-            ->orderBy('id') // urutkan jika perlu
+            ->orderBy('id')
             ->get();
 
         return response()->json([
@@ -42,7 +58,15 @@ class ChapterController extends Controller
     public function showBySlug($slug)
     {
         $chapter = Chapter::with('novel:id,title,cover')
-            ->select('id', 'title', 'slug', 'content', 'novel_id')
+            ->select(
+                'id',
+                'title',
+                'slug',
+                'volume',
+                'chapter',
+                'content',
+                'novel_id'
+            )
             ->where('slug', $slug)
             ->first();
 
@@ -54,7 +78,6 @@ class ChapterController extends Controller
             ], 404);
         }
 
-        // Cari next chapter berdasarkan ID lebih besar dalam novel yang sama
         $next = Chapter::where("novel_id", $chapter->novel_id)
             ->where("id", ">", $chapter->id)
             ->orderBy("id")

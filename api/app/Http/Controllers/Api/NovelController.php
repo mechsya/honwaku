@@ -41,10 +41,10 @@ class NovelController extends Controller
     public function showBySlug(Request $request, $slug)
     {
         $novel = Novel::with([
-            'chapter' => fn($q) => $q->select('id', 'novel_id', 'title')->orderByDesc('id'),
+            'chapter' => fn($q) => $q->select('id', 'novel_id', 'title', 'updated_at', "volume", "chapter")->orderByDesc('id'),
             'comment:id,novel_id,content,user_id,created_at'
         ])
-            ->select('id', 'title', 'slug', 'view', 'genre', 'sinopsis', 'cover')
+            ->select('id', 'title', 'slug', 'view', 'genre', 'sinopsis', 'ranting', 'author', 'cover')
             ->where('slug', $slug)
             ->firstOrFail();
 

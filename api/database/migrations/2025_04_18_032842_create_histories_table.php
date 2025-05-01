@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")
+                ->index()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId("chapter_id")
+                ->index()
                 ->references("id")
                 ->on("chapters")
                 ->cascadeOnUpdate()

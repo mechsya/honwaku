@@ -35,7 +35,13 @@ class ChapterRelationManager extends RelationManager
                     ->required()
                     ->numeric()
                     ->maxLength(10),
-                MarkdownEditor::make('content')->label("Content")
+                MarkdownEditor::make('content')
+                    ->label("Content")
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $set('content_length', strlen($state));
+                    }),
+                Hidden::make('content_length')
             ])->columns(1);
     }
 

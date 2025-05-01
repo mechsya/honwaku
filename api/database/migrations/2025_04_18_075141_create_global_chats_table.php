@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('global_chats', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index();
             $table->foreignId("user_id")
+                ->index()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate()

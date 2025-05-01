@@ -28,7 +28,6 @@ class Novel extends Model
         return FormatTime::format($value);
     }
 
-
     public function chapter()
     {
         return $this->hasMany(Chapter::class);

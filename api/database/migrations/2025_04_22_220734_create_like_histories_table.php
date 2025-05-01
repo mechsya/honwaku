@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('like_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")
+                ->index()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
             $table->foreignId("comment_id")
+                ->index()
                 ->references("id")
                 ->on("comments")
                 ->cascadeOnDelete()

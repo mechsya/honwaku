@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId("reporter_id")
+                ->index()
                 ->nullable()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId("reported_id")
+                ->index()
                 ->nullable()
                 ->references("id")
                 ->on("users")

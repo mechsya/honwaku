@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")
+                ->index()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->foreignId("novel_id")
+                ->index()
                 ->references("id")
                 ->on("novels")
                 ->cascadeOnUpdate()

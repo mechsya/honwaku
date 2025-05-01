@@ -55,11 +55,15 @@ class ChapterResource extends Resource
                         ->required()
                         ->numeric()
                         ->maxLength(10),
-
-
                 ]),
                 Section::make()->schema([
-                    MarkdownEditor::make('content')->label("Content")
+                    MarkdownEditor::make('content')
+                        ->label("Content")
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, callable $set) {
+                            $set('content_length', strlen($state));
+                        }),
+                    Hidden::make('content_length')
                 ])
             ]);
     }

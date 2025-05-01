@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('identities', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")
+                ->index()
                 ->references("id")
                 ->on("users")
                 ->cascadeOnUpdate();
