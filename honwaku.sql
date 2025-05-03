@@ -34,6 +34,8 @@ CREATE TABLE `announcements` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `announcements_user_id_foreign` (`user_id`),
+  KEY `announcements_id_index` (`id`),
+  KEY `announcements_slug_index` (`slug`),
   CONSTRAINT `announcements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -61,8 +63,8 @@ CREATE TABLE `bookmarks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `bookmarks_user_id_foreign` (`user_id`),
-  KEY `bookmarks_novel_id_foreign` (`novel_id`),
+  KEY `bookmarks_user_id_index` (`user_id`),
+  KEY `bookmarks_novel_id_index` (`novel_id`),
   CONSTRAINT `bookmarks_novel_id_foreign` FOREIGN KEY (`novel_id`) REFERENCES `novels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `bookmarks_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -137,16 +139,19 @@ CREATE TABLE `chapters` (
   `novel_id` bigint(20) unsigned NOT NULL,
   `slug` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `content_length` int(11) NOT NULL DEFAULT 0,
   `volume` varchar(10) NOT NULL,
   `chapter` varchar(10) NOT NULL,
-  `content` text NOT NULL,
+  `content` longtext NOT NULL,
   `view` bigint(20) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `chapters_slug_unique` (`slug`),
-  KEY `chapters_novel_id_foreign` (`novel_id`),
-  CONSTRAINT `chapters_novel_id_foreign` FOREIGN KEY (`novel_id`) REFERENCES `novels` (`id`) ON UPDATE CASCADE
+  KEY `chapters_id_index` (`id`),
+  KEY `chapters_novel_id_index` (`novel_id`),
+  KEY `chapters_title_index` (`title`),
+  CONSTRAINT `chapters_novel_id_foreign` FOREIGN KEY (`novel_id`) REFERENCES `novels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -175,8 +180,8 @@ CREATE TABLE `comments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `comments_user_id_foreign` (`user_id`),
-  KEY `comments_novel_id_foreign` (`novel_id`),
+  KEY `comments_user_id_index` (`user_id`),
+  KEY `comments_novel_id_index` (`novel_id`),
   CONSTRAINT `comments_novel_id_foreign` FOREIGN KEY (`novel_id`) REFERENCES `novels` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `comments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -206,7 +211,9 @@ CREATE TABLE `events` (
   `content` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `events_id_index` (`id`),
+  KEY `events_slug_index` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -262,7 +269,8 @@ CREATE TABLE `global_chats` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `global_chats_user_id_foreign` (`user_id`),
+  KEY `global_chats_id_index` (`id`),
+  KEY `global_chats_user_id_index` (`user_id`),
   CONSTRAINT `global_chats_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -290,8 +298,8 @@ CREATE TABLE `histories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `histories_user_id_foreign` (`user_id`),
-  KEY `histories_chapter_id_foreign` (`chapter_id`),
+  KEY `histories_user_id_index` (`user_id`),
+  KEY `histories_chapter_id_index` (`chapter_id`),
   CONSTRAINT `histories_chapter_id_foreign` FOREIGN KEY (`chapter_id`) REFERENCES `chapters` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -323,7 +331,7 @@ CREATE TABLE `identities` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `identities_user_id_foreign` (`user_id`),
+  KEY `identities_user_id_index` (`user_id`),
   CONSTRAINT `identities_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -411,8 +419,8 @@ CREATE TABLE `like_histories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `like_histories_user_id_foreign` (`user_id`),
-  KEY `like_histories_comment_id_foreign` (`comment_id`),
+  KEY `like_histories_user_id_index` (`user_id`),
+  KEY `like_histories_comment_id_index` (`comment_id`),
   CONSTRAINT `like_histories_comment_id_foreign` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `like_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -481,7 +489,7 @@ CREATE TABLE `novels` (
   `author` varchar(255) NOT NULL,
   `status` enum('complete','ongoing','new') NOT NULL,
   `cover` varchar(255) NOT NULL,
-  `ranting` double NOT NULL DEFAULT 0,
+  `ranting` varchar(255) NOT NULL DEFAULT 'N/A',
   `genre` varchar(255) NOT NULL,
   `sinopsis` text DEFAULT NULL,
   `view` bigint(20) NOT NULL DEFAULT 0,
@@ -490,7 +498,9 @@ CREATE TABLE `novels` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `novels_slug_unique` (`slug`),
-  KEY `title_index` (`title`)
+  KEY `novels_id_index` (`id`),
+  KEY `novels_title_index` (`title`),
+  KEY `novels_genre_index` (`genre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -578,8 +588,8 @@ CREATE TABLE `reports` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `reports_reporter_id_foreign` (`reporter_id`),
-  KEY `reports_reported_id_foreign` (`reported_id`),
+  KEY `reports_reporter_id_index` (`reporter_id`),
+  KEY `reports_reported_id_index` (`reported_id`),
   CONSTRAINT `reports_reported_id_foreign` FOREIGN KEY (`reported_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reports_reporter_id_foreign` FOREIGN KEY (`reporter_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -654,7 +664,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'admin','admin@honwaku.my.id',0,1,NULL,'$2y$12$uemGr183aF3vqA8UPcwY1eK1QTcKj7UhkKUEj20bQ6xQdSPZCyPNe',NULL,'2025-04-24 07:18:17','2025-04-24 07:18:17');
+(1,'admin','admin@honwaku.my.id',0,1,NULL,'$2y$12$yC1TuKVkFLY68GODjSjMA.zQIfrj7Ba/5P4cizkhu6o1QR6yUo7fW',NULL,'2025-05-01 01:06:41','2025-05-01 01:06:41');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -667,4 +677,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-04-24 21:22:14
+-- Dump completed on 2025-05-01 15:07:18

@@ -75,9 +75,7 @@ function ItemJumbotron(props: any) {
   return (
     <Image
       style={{ width }}
-      source={{
-        uri: props.cover,
-      }}
+      source={{ uri: props.cover }}
       className="h-52 mb-2 bg-cover bg-gray-200"
     />
   );
