@@ -18,9 +18,11 @@ class Novel extends Model
 
     public function getCoverUrlAttribute()
     {
-        return $this->cover
-            ? asset('storage/' . $this->cover)
-            : null;
+        if (filter_var($this->cover, FILTER_VALIDATE_URL)) {
+            return asset('storage/' . $this->cover);
+        } else {
+            return $this->cover;
+        }
     }
 
     public function getCreatedAtAttribute($value)
