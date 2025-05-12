@@ -11,11 +11,11 @@ import { COLOR } from "@/constants/color";
 import { useEffect, useState } from "react";
 import { BASE_URL, get, post } from "@/utils/fetch";
 import { useAtomValue, useSetAtom } from "jotai";
-import { _novel } from "@/hooks/novel";
-import { _reload } from "@/hooks/view";
+import { novelAtom } from "@/hooks/novel";
+import { reloadAtom } from "@/hooks/view";
 import Wrapper from "../wrapper";
 import InputComment from "./input-comment";
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import Modal from "../modal";
 import Alert from "../modal/alert";
 import Report from "../modal/report";
@@ -23,8 +23,8 @@ import Report from "../modal/report";
 export default function Comment() {
   const [comments, setComment] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const novel = useAtomValue(_novel);
-  const reload = useAtomValue(_reload);
+  const novel = useAtomValue(novelAtom);
+  const reload = useAtomValue(reloadAtom);
 
   useEffect(() => {
     get({
@@ -47,7 +47,7 @@ export default function Comment() {
 }
 
 const CommentItem = (props: any) => {
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
   const [likeLoading, setLikeLoading] = useState(false);
   const [comment, setComment] = useState<any>(props);
   const [modal, setModal] = useState({

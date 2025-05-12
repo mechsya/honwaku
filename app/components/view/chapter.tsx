@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
 import { View, Text, TouchableOpacity } from "react-native";
 import Wrapper from "../wrapper";
-import { _novel } from "@/hooks/novel";
+import { novelAtom } from "@/hooks/novel";
 import { useMemo } from "react";
 import { chapterAtomFamily } from "@/atom/chapter";
 
@@ -33,7 +33,7 @@ export default function Chapter({ novelId }: ChapterListProps) {
 
 function ChapterItem({ chapter }: { chapter: ChapterType }) {
   const router = useRouter();
-  const novel = useAtomValue(_novel);
+  const novel = useAtomValue(novelAtom);
 
   const handlePress = () => {
     router.push({

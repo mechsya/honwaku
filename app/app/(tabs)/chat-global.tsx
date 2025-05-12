@@ -5,11 +5,11 @@ import InputComment from "@/components/chat-global/input-comment";
 import { useEffect, useState } from "react";
 import { get } from "@/utils/fetch";
 import { useAtom, useAtomValue } from "jotai";
-import { _reload } from "@/hooks/view";
+import { reloadAtom } from "@/hooks/view";
 
 export default function ChatGlobalScreen() {
   const [globalChat, setGlobalChat] = useState<[] | any>([]);
-  const reload = useAtomValue(_reload);
+  const reload = useAtomValue(reloadAtom);
 
   useEffect(() => {
     get({ url: "global-chat", setter: setGlobalChat });

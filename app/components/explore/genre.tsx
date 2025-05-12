@@ -2,10 +2,10 @@ import { GENRE } from "@/constants/genre";
 import { FlatList } from "react-native-gesture-handler";
 import Checkbox from "../ui/checkbox";
 import { useAtom } from "jotai";
-import { _genresSelected } from "@/hooks/explore";
+import { genresSelectedAtom } from "@/hooks/explore";
 
 export default function Genre() {
-  const [genres, setGenres] = useAtom(_genresSelected);
+  const [genres, setGenres] = useAtom(genresSelectedAtom);
 
   const genrePicker = (genre: string) => {
     if (genres.includes(genre)) {

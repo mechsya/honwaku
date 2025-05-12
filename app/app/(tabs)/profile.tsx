@@ -1,6 +1,6 @@
 import * as Keychain from "react-native-keychain";
 import Container from "@/components/container";
-import { _refreshAfterLogout, _user } from "@/hooks/user";
+import { refreshAfterLogoutAtom, userAtom } from "@/hooks/user";
 import { router } from "expo-router";
 import { useAtom } from "jotai";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
@@ -13,7 +13,7 @@ import Icon from "@/components/icon";
 import { COLOR } from "@/constants/color";
 
 export default function Page() {
-  const [user, setUser] = useAtom(_user);
+  const [user, setUser] = useAtom(userAtom);
   const [openDeleteAccount, setOpenDeleteAccount] = useState(false);
 
   const options = [

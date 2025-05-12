@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { cn } from "../cn";
 import { useAtom } from "jotai";
-import { _renderComponent } from "@/hooks/library";
+import { renderComponentAtom } from "@/hooks/library";
 
 export default function Navbar() {
-  const [renderComponent, setRenderComponent] = useAtom(_renderComponent);
+  const [renderComponent, setRenderComponent] = useAtom(renderComponentAtom);
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { Chapter, Novel } from "@/types/novel";
 import { atom } from "jotai";
 
-export const _novel = atom<Novel | undefined>(undefined);
-export const _chapter = atom<Chapter | undefined>(undefined);
-export const _refreshHistory = atom<boolean>(false);
+export const novelAtom = atom<Novel | undefined>(undefined);
+export const chapterAtom = atom<Chapter | undefined>(undefined);
+export const refreshHistoryAtom = atom<boolean>(false);

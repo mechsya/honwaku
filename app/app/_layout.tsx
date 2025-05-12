@@ -13,8 +13,9 @@ import {
 import * as Keychain from "react-native-keychain";
 import { post } from "@/utils/fetch";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { _refreshAfterLogout, _user } from "@/hooks/user";
-import { _reload } from "@/hooks/view";
+import { refreshAfterLogoutAtom, userAtom } from "@/hooks/user";
+import { reloadAtom } from "@/hooks/view";
+import { createTable } from "@/utils/database";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,8 +25,8 @@ configureReanimatedLogger({
 });
 
 export default function RootLayout() {
-  const [user, setUser] = useAtom(_user);
-  const refreshAfterLogout = useAtomValue(_refreshAfterLogout);
+  const [user, setUser] = useAtom(userAtom);
+  const refreshAfterLogout = useAtomValue(refreshAfterLogoutAtom);
 
   const [loaded] = useFonts({
     Roboto: require("../assets/fonts/Roboto-Regular.ttf"),
@@ -33,32 +34,33 @@ export default function RootLayout() {
     PTSerif: require("../assets/fonts/PTSerif-Regular.ttf"),
   });
 
+  const checkLogin = async () => {
+    const credentials = await Keychain.getGenericPassword();
+
+    if (!credentials || !credentials.username || !credentials.password) {
+      return;
+    }
+
+    const email = credentials.username;
+    const password = credentials.password;
+
+    const response = await post({
+      url: "user/signin",
+      body: { email, password },
+      setter: setUser,
+    });
+
+    if (response.code !== 200) {
+      await Keychain.resetGenericPassword();
+    }
+
+    if (user) {
+      await Keychain.setGenericPassword(user?.data.email, password);
+    }
+  };
+
   useEffect(() => {
-    const checkLogin = async () => {
-      const credentials = await Keychain.getGenericPassword();
-
-      if (!credentials || !credentials.username || !credentials.password) {
-        return;
-      }
-
-      const email = credentials.username;
-      const password = credentials.password;
-
-      const response = await post({
-        url: "user/signin",
-        body: { email, password },
-        setter: setUser,
-      });
-
-      if (response.code !== 200) {
-        await Keychain.resetGenericPassword();
-      }
-
-      if (user) {
-        await Keychain.setGenericPassword(user?.data.email, password);
-      }
-    };
-
+    createTable();
     checkLogin();
 
     if (loaded) {

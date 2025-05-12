@@ -9,7 +9,7 @@ import {
 import Icon from "../icon";
 import { COLOR } from "@/constants/color";
 import { post } from "@/utils/fetch";
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import { useAtomValue } from "jotai";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function Report(props: Props) {
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
   const [reason, setReason] = useState("");
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);

@@ -10,7 +10,7 @@ import { COLOR } from "@/constants/color";
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useAtomValue } from "jotai";
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import NativeAds from "@/components/ads/native";
 import Footer from "@/components/footer";
 
@@ -44,7 +44,7 @@ export default function HomeScreen() {
 }
 
 function PopupLogin() {
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
 
   return (
     <>

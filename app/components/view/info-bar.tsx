@@ -1,8 +1,8 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "../icon";
 import { COLOR } from "@/constants/color";
-import { _novel } from "@/hooks/novel";
-import { _user } from "@/hooks/user";
+import { novelAtom } from "@/hooks/novel";
+import { userAtom } from "@/hooks/user";
 
 const InfoBar = (props: {
   ranting: number | undefined;

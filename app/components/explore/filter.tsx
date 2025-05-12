@@ -1,14 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { _filterRef, _genresSelected } from "@/hooks/explore";
+import { filterRefAtom, genresSelectedAtom } from "@/hooks/explore";
 import { useSetAtom } from "jotai";
 import { cn } from "../cn";
 import Genre from "./genre";
 
 export default function Filter() {
   const ref = useRef<BottomSheet>(null);
-  const setFilterRef = useSetAtom(_filterRef);
+  const setFilterRef = useSetAtom(filterRefAtom);
   const [filterRender, setFilterRender] = useState("genre");
 
   useEffect(() => setFilterRef(ref), [setFilterRef]);

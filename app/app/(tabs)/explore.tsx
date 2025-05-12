@@ -5,7 +5,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   FlatList,
   ScrollView,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -20,7 +19,7 @@ import { useCallback, useEffect, useState } from "react";
 import { get } from "@/utils/fetch";
 import { Novel } from "@/types/novel";
 import Wrapper from "@/components/wrapper";
-import { _genresSelected } from "@/hooks/explore";
+import { genresSelectedAtom } from "@/hooks/explore";
 
 const _query = atom("");
 
@@ -28,7 +27,7 @@ export default function ExploreScreen() {
   const [query, setQuery] = useAtom(_query);
   const [novels, setNovel] = useState<Novel[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const genres = useAtomValue(_genresSelected);
+  const genres = useAtomValue(genresSelectedAtom);
 
   const searchNovels = useCallback(
     debounce((text: string) => {
@@ -64,14 +63,18 @@ export default function ExploreScreen() {
         <View className="p-4">
           <Search onChange={handleChangeText} />
           <Seperator label="Hasil Pencarian" />
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Wrapper loading={loading} data={novels}>
-              {novels.map((item) => (
-                <CardNovel key={item.id} {...item} />
-              ))}
-              <View className="h-44"></View>
-            </Wrapper>
-          </ScrollView>
+
+          <Wrapper loading={loading} data={novels}>
+            <FlatList
+              data={novels}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => <CardNovel {...item} />}
+              showsVerticalScrollIndicator={false}
+              initialNumToRender={10}
+              maxToRenderPerBatch={10}
+              windowSize={5}
+            />
+          </Wrapper>
         </View>
         <Filter />
       </Container>

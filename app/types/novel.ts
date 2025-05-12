@@ -10,9 +10,6 @@ export type Novel = {
   sinopsis: string;
   isRecomended: boolean;
   view: number;
-  chapter: Chapter[];
-  marked: boolean;
-  comment: Comment[];
   created_at: string;
   updated_at: string;
 };
@@ -27,7 +24,7 @@ export type Comment = {
 
 export type Chapter = {
   id: number;
-  novel_id: number;
+  novelId: string | number | undefined;
   slug: string;
   title: string;
   volume: number;

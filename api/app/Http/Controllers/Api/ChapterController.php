@@ -45,7 +45,7 @@ class ChapterController extends Controller
             'updated_at'
         )
             ->where("novel_id", $novelId)
-            ->orderBy('id')
+            ->orderBy('id', 'DESC')
             ->get();
 
         return response()->json([

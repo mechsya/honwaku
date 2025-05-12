@@ -19,7 +19,12 @@ export default function CardNovel({
   const handlePress = () => {
     router.push({
       pathname: "/view",
-      params: { slug: slug },
+      params: {
+        slug: slug,
+        cover_url: cover_url,
+        title: title,
+        status: status,
+      },
     });
   };
 

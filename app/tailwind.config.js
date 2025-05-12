@@ -14,6 +14,9 @@ module.exports = {
         robotoMedium: "RobotoMedium",
         serif: "PTSerif",
       },
+      borderWidth: {
+        small: "0.5px",
+      },
       colors: {
         background: "#18181B",
         black: "#2C2C2C",

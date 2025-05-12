@@ -1,5 +1,5 @@
-import { _refreshHistory } from "@/hooks/novel";
-import { _user } from "@/hooks/user";
+import { refreshHistoryAtom } from "@/hooks/novel";
+import { userAtom } from "@/hooks/user";
 import { get } from "@/utils/fetch";
 import { router } from "expo-router";
 import { useAtomValue } from "jotai";
@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function History() {
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
   const [history, setHistory] = useState<any>({});
-  const refreshHistory = useAtomValue(_refreshHistory);
+  const refreshHistory = useAtomValue(refreshHistoryAtom);
 
   useEffect(() => {
     if (user?.data) {

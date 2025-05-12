@@ -1,10 +1,10 @@
-import { _renderComponent } from "@/hooks/view";
+import { renderComponentAtom } from "@/hooks/view";
 import { Text, TouchableOpacity, View } from "react-native";
 import { cn } from "../cn";
 import { useAtom } from "jotai";
 
 const TabBar = () => {
-  const [renderComponent, setRenderComponent] = useAtom(_renderComponent);
+  const [renderComponent, setRenderComponent] = useAtom(renderComponentAtom);
 
   return (
     <View className="border-b-[0.5px] flex-row border-black/10">

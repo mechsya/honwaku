@@ -1,7 +1,7 @@
 import Container from "@/components/container";
 import Icon from "@/components/icon";
 import { post } from "@/utils/fetch";
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import * as Keychain from "react-native-keychain";
 import {
   ActivityIndicator,
@@ -22,7 +22,7 @@ const _loading = atom(false);
 const AuthScreen = () => {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [form, setForm] = useState({ username: "", email: "", password: "" });
-  const setUser = useSetAtom(_user);
+  const setUser = useSetAtom(userAtom);
   const setLoading = useSetAtom(_loading);
   const [modal, setModal] = useState({
     visible: false,

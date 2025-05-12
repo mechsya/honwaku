@@ -1,4 +1,4 @@
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import { get } from "@/utils/fetch";
 import { useAtomValue } from "jotai";
 import { useEffect, useMemo, useState } from "react";
@@ -9,7 +9,7 @@ import { router } from "expo-router";
 import LoginAlert from "../login-alert";
 
 export default function History() {
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
   const [chapters, setChapter] = useState<any>([]);
   const [loading, setLoading] = useState(false);
 

@@ -2,10 +2,10 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Icon from "../icon";
 import { COLOR } from "@/constants/color";
 import { useAtomValue } from "jotai";
-import { _filterRef } from "@/hooks/explore";
+import { filterRefAtom } from "@/hooks/explore";
 
 export default function Navbar() {
-  const filterRef = useAtomValue(_filterRef);
+  const filterRef = useAtomValue(filterRefAtom);
 
   return (
     <View className="navbar-container">

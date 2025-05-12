@@ -1,4 +1,4 @@
 import { atom } from "jotai";
 
-export const _renderComponent = atom<string>("chapter");
-export const _reload = atom<boolean>(true);
+export const renderComponentAtom = atom<string>("chapter");
+export const reloadAtom = atom<boolean>(true);

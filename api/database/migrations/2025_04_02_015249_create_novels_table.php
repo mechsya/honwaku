@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('novels', function (Blueprint $table) {
-            $table->id()->index();
+            $table
+                ->id()
+                ->index();
             $table->string("slug")
                 ->unique()
                 ->index();
@@ -22,11 +24,16 @@ return new class extends Migration
             $table->string("author");
             $table->enum("status", ["complete", "ongoing", "new"]);
             $table->string("cover");
-            $table->string("ranting")->default("N/A");
-            $table->string("genre")->index();
-            $table->text("sinopsis")->nullable();
-            $table->bigInteger("view")->default(0);
-            $table->boolean("adult")->default(false);
+            $table->string("ranting")
+                ->default("N/A");
+            $table->string("genre")
+                ->index();
+            $table->text("sinopsis")
+                ->nullable();
+            $table->bigInteger("view")
+                ->default(0);
+            $table->boolean("adult")
+                ->default(false);
             $table->timestamps();
         });
     }

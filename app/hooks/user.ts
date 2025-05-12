@@ -11,5 +11,5 @@ type User = {
   expires_in: number;
 };
 
-export const _user = atom<User | undefined>(undefined);
-export const _refreshAfterLogout = atom<boolean>(false);
+export const userAtom = atom<User | undefined>(undefined);
+export const refreshAfterLogoutAtom = atom<boolean>(false);

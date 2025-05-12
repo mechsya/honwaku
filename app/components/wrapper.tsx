@@ -6,7 +6,7 @@ import { cn } from "./cn";
 type Wrapper = {
   children: ReactNode | ReactNode[];
   loading: boolean;
-  data: any[];
+  data: any[] | any;
 };
 
 export default function Wrapper(props: Wrapper) {

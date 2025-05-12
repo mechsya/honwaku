@@ -3,7 +3,7 @@ import { View } from "react-native";
 import Icon from "../icon";
 import { COLOR } from "@/constants/color";
 import { useRouter } from "expo-router";
-import { _settingRef } from "@/hooks/read";
+import { settingRefAtom } from "@/hooks/read";
 
 export default function Navbar() {
   const router = useRouter();

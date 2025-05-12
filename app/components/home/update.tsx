@@ -35,7 +35,14 @@ function ItemUpdate(props: any) {
       onPress={() =>
         router.push({
           pathname: "/read",
-          params: { slug: props.slug, novelSlug: props.novel.slug },
+          params: {
+            slug: props.slug,
+            novelId: props.novel.novelId,
+            title: props.title,
+            content: props.content,
+            volume: props.volume,
+            chapter: props.chapter,
+          },
         })
       }
     >

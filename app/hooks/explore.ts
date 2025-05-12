@@ -1,4 +1,4 @@
 import { atom } from "jotai";
 
-export const _filterRef = atom<any | null>(null);
-export const _genresSelected = atom<string[]>([]);
+export const filterRefAtom = atom<any | null>(null);
+export const genresSelectedAtom = atom<string[]>([]);

@@ -4,14 +4,14 @@ import { TouchableOpacity, View } from "react-native";
 import Icon from "../icon";
 import { useEffect, useState } from "react";
 import { get, post } from "@/utils/fetch";
-import { _user } from "@/hooks/user";
+import { userAtom } from "@/hooks/user";
 import { useAtomValue } from "jotai";
 import Wrapper from "../wrapper";
 import LoginAlert from "../login-alert";
 
 export default function Bookmark() {
   const [bookmarks, setBookmark] = useState<any>([]);
-  const user = useAtomValue(_user);
+  const user = useAtomValue(userAtom);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
 

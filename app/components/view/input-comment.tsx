@@ -9,15 +9,15 @@ import Icon from "../icon";
 import { post } from "@/utils/fetch";
 import { useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import { _reload } from "@/hooks/view";
-import { _user } from "@/hooks/user";
-import { _novel } from "@/hooks/novel";
+import { reloadAtom } from "@/hooks/view";
+import { userAtom } from "@/hooks/user";
+import { novelAtom } from "@/hooks/novel";
 import Modal from "../modal";
 import Alert from "../modal/alert";
 
 export default function InputComment() {
   const [commentInput, setCommentInput] = useState<string>("");
-  const [reload, setReload] = useAtom(_reload);
+  const [reload, setReload] = useAtom(reloadAtom);
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useState({
     visible: false,
@@ -25,8 +25,8 @@ export default function InputComment() {
     header: "",
   });
 
-  const user = useAtomValue(_user);
-  const novel = useAtomValue(_novel);
+  const user = useAtomValue(userAtom);
+  const novel = useAtomValue(novelAtom);
 
   const handleComment = () => {
     if (commentInput === "") {
