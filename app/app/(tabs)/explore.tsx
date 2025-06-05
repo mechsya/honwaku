@@ -63,7 +63,6 @@ export default function ExploreScreen() {
         <View className="p-4">
           <Search onChange={handleChangeText} />
           <Seperator label="Hasil Pencarian" />
-
           <Wrapper loading={loading} data={novels}>
             <FlatList
               data={novels}

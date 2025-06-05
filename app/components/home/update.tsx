@@ -37,7 +37,7 @@ function ItemUpdate(props: any) {
           pathname: "/read",
           params: {
             slug: props.slug,
-            novelId: props.novel.novelId,
+            novelId: props.novel.id,
             title: props.title,
             content: props.content,
             volume: props.volume,
@@ -56,9 +56,9 @@ function ItemUpdate(props: any) {
         {props.novel.title}
       </Text>
       <Text className="font-roboto text-black/50 text-sm">
-        <Text className="text-red-400">Baru</Text> &bull; Volume {props.volume}{" "}
-        &bull; Chapter {props.chapter} &bull; {props.content_length} Karakter
-        &bull; Diupload {props.updated_at}
+        <Text className="text-red-400">Baru</Text> &bull; Chapter{" "}
+        {props.chapter} &bull; {props.content_length} Karakter &bull; Diupload{" "}
+        {props.updated_at}
       </Text>
     </TouchableOpacity>
   );

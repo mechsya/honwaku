@@ -46,12 +46,12 @@ class ChapterController extends Controller
         )
             ->where("novel_id", $novelId)
             ->orderBy('id', 'DESC')
-            ->get();
+            ->paginate(20);
 
         return response()->json([
             "code" => 200,
             "message" => "Berhasil mengambil data",
-            "data" => $chapters
+            "data" => $chapters,
         ]);
     }
 
@@ -78,11 +78,9 @@ class ChapterController extends Controller
             ], 404);
         }
 
-        $next = Chapter::where("novel_id", $chapter->novel_id)
-            ->where("id", ">", $chapter->id)
-            ->orderBy("id")
-            ->select('id', 'title', 'slug')
-            ->first();
+        $nextChapterID = intval($chapter->chapter) + 1;
+
+        $next = Chapter::select(['id', 'slug'])->where("novel_id", $chapter->novel->id)->where('chapter', $nextChapterID)->first();
 
         $chapter->next = $next;
 

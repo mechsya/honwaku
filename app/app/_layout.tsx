@@ -31,7 +31,7 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     Roboto: require("../assets/fonts/Roboto-Regular.ttf"),
     RobotoMedium: require("../assets/fonts/Roboto-Medium.ttf"),
-    PTSerif: require("../assets/fonts/PTSerif-Regular.ttf"),
+    PTSerif: require("../assets/fonts/Source-Regular.ttf"),
   });
 
   const checkLogin = async () => {

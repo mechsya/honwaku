@@ -11,7 +11,7 @@ export default function NativeAds() {
   const [nativeAd, setNativeAd] = useState<NativeAd>();
 
   useEffect(() => {
-    NativeAd.createForAdRequest("ca-app-pub-9927932498877675/2607457788", {
+    NativeAd.createForAdRequest(TestIds.NATIVE, {
       aspectRatio: NativeMediaAspectRatio.SQUARE,
       startVideoMuted: false,
     })
@@ -28,6 +28,7 @@ export default function NativeAds() {
       style={{
         width: 250,
         margin: "auto",
+        marginVertical: 16,
       }}
       nativeAd={nativeAd}
     >

@@ -1,5 +1,5 @@
 export type Novel = {
-  id: string;
+  id: string | number;
   slug: string;
   title: string;
   author: string;
@@ -22,6 +22,11 @@ export type Comment = {
   like: number;
 };
 
+type nextChapter = {
+  id: number;
+  slug: string;
+};
+
 export type Chapter = {
   id: number;
   novelId: string | number | undefined;
@@ -31,7 +36,7 @@ export type Chapter = {
   chapter: number;
   content: string;
   view: number;
-  next: Chapter;
+  next: nextChapter;
   created_at: string;
   updated_at: string;
 };

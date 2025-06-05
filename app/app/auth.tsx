@@ -87,7 +87,7 @@ const AuthScreen = () => {
       clearForm();
     } else {
       setModal({
-        header: "Yahhh..",
+        header: "Uppss..",
         message: result.message,
         visible: true,
       });

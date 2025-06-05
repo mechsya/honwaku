@@ -1,7 +1,7 @@
 const isDev = true;
 
 export const BASE_URL = isDev
-  ? "http://192.168.0.4:8000"
+  ? "http://192.168.0.9:8000"
   : "https://honwaku.my.id";
 
 const API_URL = BASE_URL + "/api/";

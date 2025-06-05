@@ -16,11 +16,11 @@ export default function Navbar() {
   };
 
   return (
-    <View className="navbar-container border-b-0">
-      <TouchableOpacity onPress={() => router.back()}>
+    <View className="bg-white w-full  z-50 flex-row justify-between">
+      <TouchableOpacity className="p-3" onPress={() => router.back()}>
         <Icon name="arrow-back" size={20} color={COLOR.BLACK} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={copyToClipboard}>
+      <TouchableOpacity className="p-3" onPress={copyToClipboard}>
         <Icon name="share" size={20} color={COLOR.BLACK} />
       </TouchableOpacity>
     </View>

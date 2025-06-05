@@ -18,10 +18,10 @@ class Novel extends Model
 
     public function getCoverUrlAttribute()
     {
-        if (filter_var($this->cover, FILTER_VALIDATE_URL)) {
-            return asset('storage/' . $this->cover);
-        } else {
+        if (filter_var(str_replace(' ', '%20', $this->cover), FILTER_VALIDATE_URL)) {
             return $this->cover;
+        } else {
+            return asset('storage/' . $this->cover);
         }
     }
 
