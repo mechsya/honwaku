@@ -1,4 +1,4 @@
-const isDev = true;
+const isDev = false;
 
 export const BASE_URL = isDev
   ? "http://192.168.0.9:8000"
