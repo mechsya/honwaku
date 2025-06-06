@@ -10,7 +10,7 @@ type Props = {
 
 export default function Alert(props: Props) {
   return (
-    <View className="w-[50%]">
+    <View>
       <View className="flex-row z-50 justify-between">
         <Text className="font-robotoMedium text-black text-lg">
           {props.header}
