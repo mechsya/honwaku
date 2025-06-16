@@ -27,6 +27,7 @@ export default function ViewScreen() {
   const [hasMore, setHasMore] = useState(true);
   const [user, setUser] = useAtom(userAtom);
   const [markedNovel, setMarkedNovel] = useState(false);
+  const [sort, setSort] = useState(true);
   const [modal, setModal] = useState({
     visible: false,
     message: "",
@@ -36,6 +37,15 @@ export default function ViewScreen() {
   useEffect(() => {
     fetchNovel();
   }, []);
+
+  useEffect(() => {
+    if (novel?.id) {
+      setChapters([]);
+      setPageChapter(1);
+      setHasMore(true);
+      fetchChapter(novel.id, 1);
+    }
+  }, [sort]);
 
   const fetchNovel = async () => {
     setLoadingNovel(true);
@@ -55,7 +65,7 @@ export default function ViewScreen() {
     setLoadingChapter(true);
     try {
       const chapterResponse = await get({
-        url: `chapter?novel_id=${novelId}&page=${page}`,
+        url: `chapter?novel_id=${novelId}&page=${page}&sort=${sort ? "DESC" : "ASC"}`,
       });
 
       const data = chapterResponse?.data;
@@ -165,6 +175,12 @@ export default function ViewScreen() {
 
       <View className="flex-row justify-between p-4">
         <Text className="text-black text-lg">Daftar Chapter</Text>
+        <TouchableOpacity
+          className={cn("duration-300", sort ? "rotate-180" : "")}
+          onPress={() => setSort(!sort)}
+        >
+          <Icon name={"sort"} size={20} color={COLOR.BLACK} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -202,7 +218,7 @@ export default function ViewScreen() {
         onEndReachedThreshold={0.3}
         ListFooterComponent={Footer}
       />
-      <Banner />
+      <Banner id="ca-app-pub-9927932498877675/7008126393" />
     </Container>
   );
 }
@@ -237,7 +253,7 @@ const ListChapter = React.memo((chapter: Chapter) => {
         {chapter.title}
       </Text>
       <Text className="text-black/50 text-sm">
-        Chapter {chapter.chapter} &middot; {chapter.updated_at}
+        {chapter.chapter} &middot; {chapter.updated_at}
       </Text>
     </TouchableOpacity>
   );

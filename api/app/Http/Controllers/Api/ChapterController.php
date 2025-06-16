@@ -45,7 +45,7 @@ class ChapterController extends Controller
             'updated_at'
         )
             ->where("novel_id", $novelId)
-            ->orderBy('id', 'ASC')
+            ->orderBy('id', $request->get("sort") ?? "DESC")
             ->paginate(20);
 
         return response()->json([
@@ -78,9 +78,11 @@ class ChapterController extends Controller
             ], 404);
         }
 
-        $nextChapterID = intval($chapter->chapter) + 1;
-
-        $next = Chapter::select(['id', 'slug'])->where("novel_id", $chapter->novel->id)->where('chapter', $nextChapterID)->first();
+        $next = Chapter::where('novel_id', $chapter->novel_id)
+            ->where('id', '>', $chapter->id)
+            ->orderBy('created_at', 'ASC')
+            ->select('id', 'slug', 'title')
+            ->first();
 
         $chapter->next = $next;
 

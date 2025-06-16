@@ -30,6 +30,7 @@ Route::prefix("account")->group(function () {
 
 Route::prefix("novel")->group(function () {
     Route::get('recomendation', [NovelController::class, "showRecomendation"]);
+    Route::get('new-release', [NovelController::class, "showNewRelease"]);
     Route::get('search', [NovelController::class, "search"]);
     Route::get('{slug}', [NovelController::class, "showBySlug"]);
 });

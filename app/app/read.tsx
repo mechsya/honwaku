@@ -152,7 +152,7 @@ export default function ReadScreen() {
           ListFooterComponent={footerComponent}
         />
         <PaperSettingSheet ref={bottomSheetRef} />
-        <Banner />
+        <Banner id="ca-app-pub-9927932498877675/9730492658" />
       </Container>
     </GestureHandlerRootView>
   );

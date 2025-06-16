@@ -4,10 +4,10 @@ import {
   TestIds,
 } from "react-native-google-mobile-ads";
 
-export default function Banner() {
+export default function Banner({ id }: { id?: string }) {
   return (
     <BannerAd
-      unitId={TestIds.BANNER}
+      unitId={id ? id : TestIds.BANNER}
       size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
     />
   );

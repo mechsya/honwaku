@@ -13,6 +13,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/hooks/user";
 import NativeAds from "@/components/ads/native";
 import Footer from "@/components/footer";
+import NewRelease from "@/components/home/new-release";
 
 export default function HomeScreen() {
   return (
@@ -24,8 +25,9 @@ export default function HomeScreen() {
         <Update />
         <History />
         <Recomendation />
+        <NewRelease />
         <Announcement />
-        <NativeAds />
+        <NativeAds id="ca-app-pub-9927932498877675/9473914733" />
         <View className="w-full px-6 py-6">
           <TouchableOpacity
             onPress={() => router.navigate("/explore")}

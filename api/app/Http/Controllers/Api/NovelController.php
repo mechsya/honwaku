@@ -22,6 +22,19 @@ class NovelController extends Controller
         ]);
     }
 
+    public function showNewRelease()
+    {
+        $novels = Novel::orderByDesc('id')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            "code" => 200,
+            "message" => "Berhasil mengambil data",
+            "data" => $novels
+        ]);
+    }
+
     public function search(Request $request)
     {
         $query = $request->get("q");
@@ -29,7 +42,7 @@ class NovelController extends Controller
 
         $novels = Novel::when($query, fn($q) => $q->where("title", "LIKE", "%$query%"))
             ->when($genre, fn($q) => $q->where("genre", "LIKE", "%$genre%"))
-            ->get();
+            ->paginate(5);
 
         return response()->json([
             "code" => 200,

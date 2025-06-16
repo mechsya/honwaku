@@ -7,7 +7,7 @@ export default function Navbar() {
     <>
       <View className="navbar-container">
         <Image
-          style={{ width: 40, height: 40 }}
+          style={{ width: 70, height: 70 }}
           source={require("@/assets/images/logo.png")}
         />
         <View className="flex-row gap-6 items-center">

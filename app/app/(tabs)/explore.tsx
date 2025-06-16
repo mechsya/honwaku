@@ -1,101 +1,168 @@
-import Container from "@/components/container";
-import Navbar from "@/components/explore/navbar";
-import { COLOR } from "@/constants/color";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
+  ActivityIndicator,
   FlatList,
-  ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import Icon from "@/components/icon";
-import Seperator from "@/components/seperator";
-import CardNovel from "@/components/ui/card-novel";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useEffect, useRef, useState } from "react";
+
+import Container from "@/components/container";
+import Navbar from "@/components/explore/navbar";
 import Filter from "@/components/explore/filter";
-import { atom, useAtom, useAtomValue } from "jotai";
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useState } from "react";
+import Icon from "@/components/icon";
+import CardNovel from "@/components/ui/card-novel";
+import { COLOR } from "@/constants/color";
+import { GENRE } from "@/constants/genre";
 import { get } from "@/utils/fetch";
 import { Novel } from "@/types/novel";
-import Wrapper from "@/components/wrapper";
-import { genresSelectedAtom } from "@/hooks/explore";
-
-const _query = atom("");
+import { cn } from "@/components/cn";
 
 export default function ExploreScreen() {
-  const [query, setQuery] = useAtom(_query);
-  const [novels, setNovel] = useState<Novel[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const genres = useAtomValue(genresSelectedAtom);
+  const [query, setQuery] = useState("");
+  const [genres, setGenres] = useState<string[]>([]);
+  const [novels, setNovels] = useState<Novel[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
-  const searchNovels = useCallback(
-    debounce((text: string) => {
-      let genreString = genres?.join(",");
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-      if (text.trim() === "" && genres.length === 0) {
-        setNovel([]);
-        return;
-      }
-
-      get({
-        url: `novel/search?q=${text}&genre=${genreString}`,
-        setter: setNovel,
-        loading: setLoading,
+  const fetchNovels = async (newPage = 1, reset = false) => {
+    if (loading || (!hasMore && !reset)) return;
+    setLoading(true);
+    try {
+      const response = await get({
+        url: `novel/search?q=${query}&genre=${genres.join(",")}&page=${newPage}`,
       });
-    }, 500),
-    [genres]
-  );
+      const data = await response?.data;
 
-  const handleChangeText = (text: string) => {
-    setQuery(text);
-    searchNovels(text);
+      if (Array.isArray(data?.data)) {
+        setNovels((prev) => (reset ? data.data : [...prev, ...data.data]));
+        setHasMore(data.current_page < data.last_page);
+        setPage(data.current_page + 1);
+      }
+    } catch (err) {
+      console.error("fetch error:", err);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Fetch saat user mengetik (dengan debounce)
   useEffect(() => {
-    searchNovels(query);
-  }, [genres, query, searchNovels]);
+    if (!hasInteracted) return;
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      fetchNovels(1, true);
+    }, 500);
+  }, [query]);
+
+  // Fetch saat genre dipilih (hanya jika user sudah interaksi)
+  useEffect(() => {
+    if (!hasInteracted) return;
+    fetchNovels(1, true);
+  }, [genres]);
+
+  const handleEndReached = () => {
+    if (!loading && hasMore) {
+      fetchNovels(page);
+    }
+  };
+
+  const toggleGenre = (genre: string) => {
+    setHasInteracted(true);
+    setGenres((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
+    );
+  };
+
+  const GenreFilter = () => (
+    <FlatList
+      data={GENRE}
+      horizontal
+      keyExtractor={(item) => item}
+      showsHorizontalScrollIndicator={false}
+      ItemSeparatorComponent={() => <View className="w-2" />}
+      className="mt-4"
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          onPress={() => toggleGenre(item)}
+          className={cn(
+            "border px-4 justify-center items-center rounded-full h-10",
+            genres.includes(item) ? "border-primary" : "border-black/10"
+          )}
+        >
+          <Text className="text-black/80 uppercase font-medium">{item}</Text>
+        </TouchableOpacity>
+      )}
+    />
+  );
+
+  const Footer = () => (
+    <View className="items-center my-4">
+      {loading ? (
+        <ActivityIndicator size="small" color={COLOR.PRIMARY} />
+      ) : hasMore ? (
+        <Text className="text-black/70 font-roboto">
+          Scroll untuk memuat lebih banyak
+        </Text>
+      ) : null}
+    </View>
+  );
 
   return (
     <GestureHandlerRootView className="flex-1">
-      <Container>
-        <Navbar />
-        <View className="p-4">
-          <Search onChange={handleChangeText} />
-          <Seperator label="Hasil Pencarian" />
-          <Wrapper loading={loading} data={novels}>
-            <FlatList
-              data={novels}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => <CardNovel {...item} />}
-              showsVerticalScrollIndicator={false}
-              initialNumToRender={10}
-              maxToRenderPerBatch={10}
-              windowSize={5}
-            />
-          </Wrapper>
-        </View>
-        <Filter />
-      </Container>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={{ flex: 1 }}
+      >
+        <Container>
+          <Navbar />
+
+          {/* Search + Filter */}
+          <View className="p-4">
+            <View className="flex-row rounded border border-black/10 items-center">
+              <TextInput
+                placeholder="Cari nama novel"
+                value={query}
+                onChangeText={(text) => {
+                  setQuery(text);
+                  setHasInteracted(true);
+                }}
+                className="flex-1 p-4 font-roboto text-lg"
+              />
+              <TouchableOpacity className="px-2">
+                <Icon name="search" size={20} color={COLOR.BLACK} />
+              </TouchableOpacity>
+            </View>
+            <GenreFilter />
+          </View>
+
+          {/* Novel List */}
+          <FlatList
+            data={novels}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item }) => <CardNovel {...item} />}
+            showsVerticalScrollIndicator={false}
+            onEndReached={handleEndReached}
+            initialNumToRender={5}
+            maxToRenderPerBatch={5}
+            windowSize={5}
+            onEndReachedThreshold={0.3}
+            ListFooterComponent={Footer}
+            contentContainerStyle={{ paddingHorizontal: 16 }}
+            keyboardShouldPersistTaps="handled"
+          />
+        </Container>
+      </KeyboardAvoidingView>
     </GestureHandlerRootView>
   );
 }
-
-const Search = ({ onChange }: { onChange: (value: string) => void }) => {
-  const query = useAtomValue(_query);
-
-  return (
-    <View className="flex-row bg-gray-100 my-2 rounded items-center">
-      <TextInput
-        placeholder="Cari novel"
-        onChangeText={onChange}
-        value={query}
-        placeholderClassName="font-roboto"
-        className="flex-1 p-4 font-roboto text-lg"
-      />
-      <TouchableOpacity className="px-2">
-        <Icon name="search" size={20} color={COLOR.BLACK} />
-      </TouchableOpacity>
-    </View>
-  );
-};

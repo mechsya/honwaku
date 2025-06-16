@@ -7,11 +7,11 @@ import {
   TestIds,
 } from "react-native-google-mobile-ads";
 
-export default function NativeAds() {
+export default function NativeAds({ id }: { id?: string }) {
   const [nativeAd, setNativeAd] = useState<NativeAd>();
 
   useEffect(() => {
-    NativeAd.createForAdRequest(TestIds.NATIVE, {
+    NativeAd.createForAdRequest(id ? id : TestIds.NATIVE, {
       aspectRatio: NativeMediaAspectRatio.SQUARE,
       startVideoMuted: false,
     })
