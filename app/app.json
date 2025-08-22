@@ -9,13 +9,16 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mechsya.honwaku"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#E2C9FF"
       },
+      "compileSdkVersion": 35,
+      "targetSdkVersion": 35,
       "package": "com.mechsya.honwaku"
     },
     "web": {

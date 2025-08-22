@@ -16,7 +16,7 @@ export default function NewRelease() {
 
   return (
     <View className="p-4">
-      <Seperator label={"Baru ditembahkan"} />
+      <Seperator label={"Baru ditambahkan"} />
       <Wrapper loading={loading} data={novels}>
         {novels.map((item, index) => (
           <CardNovel {...item} key={index} />
